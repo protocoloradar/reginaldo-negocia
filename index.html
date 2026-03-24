@@ -328,7 +328,7 @@ body { background: var(--bg); font-family: 'Crimson Pro', Georgia, serif; color:
 
 <script>
 // ─── GATE ───
-function liberarApp() {
+async function liberarApp() {
   const nome = document.getElementById('gate-nome').value.trim();
   const email = document.getElementById('gate-email').value.trim();
   if (!nome || !email || !email.includes('@')) {
@@ -338,9 +338,22 @@ function liberarApp() {
   }
   localStorage.setItem('rn_email', email);
   localStorage.setItem('rn_nome', nome);
+  localStorage.setItem('rn_v', '2');
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbwFcBlsZ9CDSbSGXJeQn_1qG1kBhOyyyO136f9Ef2tBCCp12oCqPrrjFz1coa_E97RmzQ/exec', {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome: nome, email: email, origem: 'app-negociacao' })
+    });
+  } catch(e) {}
   document.getElementById('gate').classList.add('hidden');
 }
-if (localStorage.getItem('rn_email')) document.getElementById('gate').classList.add('hidden');
+if (localStorage.getItem('rn_email') && localStorage.getItem('rn_v') === '2') {
+  document.getElementById('gate').classList.add('hidden');
+} else {
+  localStorage.removeItem('rn_email');
+  localStorage.removeItem('rn_nome');
+}
 
 // ─── TABS ───
 function showTab(id, el) {
