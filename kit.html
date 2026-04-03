@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit de Decisão — Negociação na Vida Real</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine: #590E1F;
+    --wine-deep: #3D0A15;
+    --wine-mid: #7A1428;
+    --gold: #E0BA67;
+    --gold-light: #EDD18A;
+    --cream: #F5EFE6;
+    --text-light: #F9F5EE;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--wine-deep);
+    color: var(--text-light);
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(224,186,103,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(89,14,31,0.8) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Chess pattern subtle overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.01) 0px,
+      rgba(255,255,255,0.01) 1px,
+      transparent 1px,
+      transparent 40px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    border: 1px solid rgba(224,186,103,0.4);
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 7px 18px;
+    margin-bottom: 40px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  /* Knight icon */
+  .knight {
+    font-size: 52px;
+    margin-bottom: 32px;
+    opacity: 0.85;
+    animation: fadeDown 0.9s ease 0.1s both;
+    filter: drop-shadow(0 0 20px rgba(224,186,103,0.3));
+  }
+
+  /* Title */
+  .title-small {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    animation: fadeDown 1s ease 0.2s both;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 8vw, 68px);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    animation: fadeDown 1s ease 0.25s both;
+  }
+
+  .subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+    animation: fadeDown 1s ease 0.3s both;
+  }
+
+  /* Divider */
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin-bottom: 40px;
+    animation: fadeDown 1s ease 0.35s both;
+  }
+
+  /* Description */
+  .description {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-style: italic;
+    line-height: 1.7;
+    color: rgba(249,245,238,0.82);
+    margin-bottom: 48px;
+    max-width: 520px;
+    animation: fadeDown 1s ease 0.4s both;
+  }
+
+  /* What's inside */
+  .inside-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    animation: fadeDown 1s ease 0.45s both;
+  }
+
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 52px;
+    width: 100%;
+    max-width: 440px;
+    animation: fadeDown 1s ease 0.5s both;
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(224,186,103,0.12);
+    padding: 14px 20px;
+    text-align: left;
+  }
+
+  .item-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .item-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(249,245,238,0.85);
+    line-height: 1.4;
+  }
+
+  /* CTA Button */
+  .cta-wrap {
+    animation: fadeDown 1s ease 0.55s both;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .btn-download {
+    display: block;
+    width: 100%;
+    background: var(--gold);
+    color: var(--wine-deep);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 20px 32px;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-download::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .btn-download:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(224,186,103,0.3);
+  }
+
+  .btn-download:hover::before {
+    opacity: 1;
+  }
+
+  .btn-download:active {
+    transform: translateY(0);
+  }
+
+  /* Free tag */
+  .free-tag {
+    margin-top: 14px;
+    font-size: 11px;
+    color: rgba(249,245,238,0.4);
+    letter-spacing: 1px;
+    animation: fadeDown 1s ease 0.6s both;
+  }
+
+  /* Divider bottom */
+  .divider-bottom {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(224,186,103,0.2), transparent);
+    margin: 56px 0 40px;
+    animation: fadeDown 1s ease 0.65s both;
+  }
+
+  /* Signature */
+  .signature {
+    animation: fadeDown 1s ease 0.7s both;
+  }
+
+  .signature-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: rgba(249,245,238,0.5);
+    margin-bottom: 6px;
+  }
+
+  .signature-name {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.7;
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    .container { padding: 48px 20px 60px; }
+    h1 { font-size: 42px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="badge">Kit de Decisão</div>
+
+  <div class="knight">♞</div>
+
+  <div class="title-small">Negociação na Vida Real</div>
+  <h1>Decisão</h1>
+  <div class="subtitle">Material Gratuito</div>
+
+  <div class="divider"></div>
+
+  <p class="description">
+    Checklists, perguntas estratégicas e os erros silenciosos que custam caro — 
+    tudo que você precisa antes de entrar em qualquer conversa importante.
+  </p>
+
+  <div class="inside-title">O que está no Kit</div>
+
+  <div class="items">
+    <div class="item">
+      <span class="item-icon">🔍</span>
+      <span class="item-text">Checklist de Preparação Invisível — organize sua cabeça antes da conversa</span>
+    </div>
+    <div class="item">
+      <span class="item-icon">📖</span>
+      <span class="item-text">Mini Ebook — 4 erros silenciosos que custam caro na vida real</span>
+    </div>
+    <div class="item">
+      <span class="item-icon">🎯</span>
+      <span class="item-text">Roteiro de Perguntas — perguntas que deslocam a decisão para o seu lado</span>
+    </div>
+  </div>
+
+  <div class="cta-wrap">
+    <a class="btn-download" href="Kit%20de%20Decis%C3%A3o%20-%20Negoci%C3%A7%C3%A3o%20na%20Vida%20Real.pdf" download="Kit-de-Decisao-Reginaldo-Negocia.pdf">
+      ↓ Baixar Kit Gratuitamente
+    </a>
+  </div>
+
+  <p class="free-tag">PDF gratuito · 24 páginas · sem cadastro</p>
+
+  <div class="divider-bottom"></div>
+
+  <div class="signature">
+    <p class="signature-text">Porque quem entende o jogo não precisa levantar a voz.</p>
+    <p class="signature-name">— Reginaldo Negocia · @reginaldonegocia</p>
+  </div>
+
+</div>
+</body>
+</html>
