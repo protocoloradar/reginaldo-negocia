@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Arena do Negociador — 20 cenários reais. Teste sua tomada de decisão sob pressão.">
+  <title>Arena do Negociador | Reginaldo Negocia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --petroleo: #0B1D2E;
+      --petroleo-light: #122B42;
+      --petroleo-dark: #06121C;
+      --ouro: #C9A84C;
+      --ouro-light: #D4B76A;
+      --ouro-dark: #A68A3C;
+      --noir: #0A0A0A;
+      --text-primary: #F0F2F5;
+      --text-secondary: rgba(240, 242, 245, 0.65);
+      --text-muted: rgba(240, 242, 245, 0.4);
+      --border: rgba(201, 168, 76, 0.15);
+      --border-hover: rgba(201, 168, 76, 0.4);
+      --glass: rgba(11, 29, 46, 0.85);
+      --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --success: #4CAF50;
+      --danger: #C94C4C;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--petroleo);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--petroleo-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--ouro-dark); border-radius: 3px; }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.2rem 4%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ouro);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+    .logo span { color: var(--text-primary); font-weight: 400; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--ouro);
+      transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--ouro); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links .highlight {
+      border: 1px solid var(--ouro);
+      padding: 0.5rem 1.2rem;
+      color: var(--ouro);
+      border-radius: 2px;
+    }
+    .nav-links .highlight::after { display: none; }
+    .nav-links .highlight:hover {
+      background: var(--ouro);
+      color: var(--petroleo-dark);
+    }
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--ouro);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .page-header {
+      padding: 10rem 4% 4rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .page-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--ouro);
+      margin-bottom: 1rem;
+    }
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .page-title em { font-style: italic; color: var(--ouro); }
+    .page-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .arena-container {
+      max-width: 800px;
+      margin: 0 auto 6rem;
+      padding: 0 4%;
+    }
+
+    .progress-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+      padding: 1rem 1.5rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .progress-info {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+    }
+    .progress-info span { color: var(--ouro); font-weight: 600; }
+    .progress-track {
+      flex: 1;
+      height: 3px;
+      background: rgba(201, 168, 76, 0.1);
+      margin: 0 1.5rem;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--ouro);
+      transition: width 0.5s ease;
+      border-radius: 2px;
+    }
+    .score-display {
+      font-size: 0.8rem;
+      color: var(--ouro);
+      font-weight: 600;
+    }
+
+    .question-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3rem;
+      margin-bottom: 2rem;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--danger);
+      margin-bottom: 1.5rem;
+    }
+
+    .question-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 400;
+      line-height: 1.4;
+      margin-bottom: 0.75rem;
+    }
+
+    .question-context {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      font-style: italic;
+      margin-bottom: 2.5rem;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+
+    .option:hover {
+      border-color: var(--border-hover);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .option-letter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--ouro);
+      min-width: 24px;
+    }
+
+    .option-text {
+      line-height: 1.6;
+    }
+
+    .option.correct {
+      border-color: var(--success);
+      background: rgba(76, 175, 80, 0.05);
+    }
+    .option.wrong {
+      border-color: var(--danger);
+      background: rgba(201, 76, 76, 0.05);
+    }
+    .option.disabled {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .feedback {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      animation: fadeIn 0.4s ease;
+    }
+    .feedback.correct {
+      background: rgba(76, 175, 80, 0.08);
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      color: #8BC34A;
+    }
+    .feedback.wrong {
+      background: rgba(201, 76, 76, 0.08);
+      border: 1px solid rgba(201, 76, 76, 0.3);
+      color: #EF5350;
+    }
+    .feedback strong {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .next-btn {
+      margin-top: 2rem;
+      display: inline-block;
+    }
+
+    .result-card {
+      text-align: center;
+      padding: 4rem 3rem;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .result-score {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 600;
+      color: var(--ouro);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .result-score-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .result-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .result-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .start-screen {
+      text-align: center;
+      padding: 2rem 0 4rem;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .start-screen p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+    }
+
+    footer {
+      background: var(--noir);
+      border-top: 1px solid var(--border);
+      padding: 4rem 4% 2rem;
+      margin-top: auto;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-brand .logo {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 300px;
+    }
+    .footer-col h4 {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--ouro);
+      margin-bottom: 1.5rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.75rem; }
+    .footer-col a {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .footer-col a:hover { color: var(--ouro); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .footer-social { display: flex; gap: 1.5rem; }
+    .footer-social a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: var(--transition);
+    }
+    .footer-social a:hover { color: var(--ouro); }
+
+    @media (max-width: 1024px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      .page-header { padding: 8rem 6% 3rem; }
+      .question-card { padding: 2rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .result-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Reginaldo <span>Negocia</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/arena.html">Arena</a></li>
+      <li><a href="/batna-zopa.html">BATNA/ZOPA</a></li>
+      <li><a href="/prep-ia.html">Prep com IA</a></li>
+      <li><a href="/kit.html">Kit Gratuito</a></li>
+      <li><a href="/sobre.html">Sobre</a></li>
+      <li><a href="/contato.html" class="highlight">Contato</a></li>
+    </ul>
+    <button class="mobile-menu-btn">☰</button>
+  </nav>
+
+  <div class="page-header">
+    <p class="page-eyebrow">⚔️ Arena do Negociador</p>
+    <h1 class="page-title">20 cenários reais.<br>Teste sua <em>tomada de decisão</em> sob pressão.</h1>
+    <p class="page-desc">Cada escolha revela seu padrão. Não existe nota boa ou ruim — existe consciência do jogo.</p>
+  </div>
+
+  <div class="arena-container">
+    <div id="quiz-app"></div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo">Reginaldo <span>Negocia</span></a>
+        <p>Presença, leitura e posicionamento na prática. Para quem precisa decidir, vender, comprar e negociar com mais controle.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Ferramentas</h4>
+        <ul>
+          <li><a href="/arena.html">Arena do Negociador</a></li>
+          <li><a href="/batna-zopa.html">Calculadora BATNA/ZOPA</a></li>
+          <li><a href="/prep-ia.html">Prep com IA</a></li>
+          <li><a href="/kit.html">Kit de Decisão</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Institucional</h4>
+        <ul>
+          <li><a href="/sobre.html">Sobre</a></li>
+          <li><a href="/contato.html">Contato</a></li>
+          <li><a href="/privacidade.html">Privacidade</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Conecte-se</h4>
+        <ul>
+          <li><a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Reginaldo Negocia. Todos os direitos reservados.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const questions = [
+      {
+        scenario: "Fogo",
+        text: "O outro lado diz: 'Não tenho autonomia para isso, preciso consultar meu gestor.'",
+        context: "Você está em uma rodada decisiva de negociação com prazo curto.",
+        options: [
+          { letter: "A", text: "Aumente sua oferta para que ele consiga aprovar", points: 0 },
+          { letter: "B", text: "É uma tática clássica de ganhar tempo — responda pedindo prazo de retorno", points: 3 },
+          { letter: "C", text: "Ele está sendo honesto — aguarde a resposta do gestor dele", points: 1 },
+          { letter: "D", text: "Encerre a reunião e mande proposta por e-mail", points: 0 }
+        ],
+        correct: 1,
+        explanation: "Quem pede para 'consultar o gestor' geralmente testa sua pressa ou busca tempo para reagrupar. Pedir um prazo de retorno mantém você no controle do ritmo, sem ceder posição."
+      },
+      {
+        scenario: "Fogo",
+        text: "O cliente diz: 'Seu concorrente cobra 30% menos. Preciso que vocês igualem.'",
+        context: "Você está no fechamento de um contrato de fornecimento de 12 meses.",
+        options: [
+          { letter: "A", text: "Iguala o preço para não perder o cliente", points: 0 },
+          { letter: "B", text: "Pergunta o que o concorrente inclui nesse valor antes de comparar", points: 3 },
+          { letter: "C", text: "Diz que seu preço é justo e não abre mão", points: 1 },
+          { letter: "D", text: "Oferece um desconto de 15% como gesto de boa vontade", points: 0 }
+        ],
+        correct: 1,
+        explanation: "Comparar preços sem comparar escopo é armadilha comum. Quem pergunta primeiro desarma a pressão e descobre se o 'menor' é realmente equivalente."
+      },
+      {
+        scenario: "Fogo",
+        text: "Na mesa, o outro lado fica em silêncio por 12 segundos depois da sua proposta.",
+        context: "Você acabou de apresentar sua contraproposta em uma negociação salarial.",
+        options: [
+          { letter: "A", text: "Quebra o silêncio com uma concessão para facilitar", points: 0 },
+          { letter: "B", text: "Mantém o silêncio e observa a reação dele", points: 3 },
+          { letter: "C", text: "Repete a proposta achando que ele não entendeu", points: 0 },
+          { letter: "D", text: "Pergunta se tem algo que ele gostaria de ajustar", points: 1 }
+        ],
+        correct: 1,
+        explanation: "Silêncio é moeda de troca. Quem fala primeiro no silêncio do outro geralmente paga a conta. Aguardar é postura."
+      },
+      {
+        scenario: "Fogo",
+        text: "O fornecedor diz: 'Esse é meu preço final. Não tenho como abrir.'",
+        context: "Você precisa fechar essa compra esta semana para não parar a operação.",
+        options: [
+          { letter: "A", text: "Aceita o preço — a operação não pode parar", points: 0 },
+          { letter: "B", text: "Pergunta o que ele poderia incluir no mesmo valor", points: 3 },
+          { letter: "C", text: "Ameaça buscar outro fornecedor", points: 1 },
+          { letter: "D", text: "Pede 48h para 'consultar sua diretoria'", points: 2 }
+        ],
+        correct: 1,
+        explanation: "Quando o preço é inflexível, o jogo muda para o que está incluso. Prazo, pagamento, entrega, garantia — tudo é negociável, mesmo o valor não sendo."
+      },
+      {
+        scenario: "Fogo",
+        text: "Em uma reunião com 5 pessoas do outro lado, apenas 1 fala. Os outros observam.",
+        context: "Você está apresentando uma proposta de consultoria de R$ 500 mil.",
+        options: [
+          { letter: "A", text: "Dirige toda a conversa para quem está falando", points: 0 },
+          { letter: "B", text: "Observa quem os outros olham quando há decisão implícita", points: 3 },
+          { letter: "C", text: "Pergunta diretamente quem é o decisor", points: 1 },
+          { letter: "D", text: "Distribui material para todos igualmente", points: 0 }
+        ],
+        correct: 1,
+        explanation: "A hierarquia real de uma mesa raramente é anunciada. Quem os outros olham quando há pausa ou tensão é quem realmente decide."
+      },
+      {
+        scenario: "Fogo",
+        text: "O comprador diz: 'Vou precisar de 90 dias de pagamento. É política da empresa.'",
+        context: "Você trabalha com prazo de 30 dias e margem apertada.",
+        options: [
+          { letter: "A", text: "Aceita — política da empresa é inegociável", points: 0 },
+          { letter: "B", text: "Aceita os 90 dias, mas aumenta o preço para cobrir o capital de giro", points: 3 },
+          { letter: "C", text: "Recusa veementemente e encerra a conversa", points: 0 },
+          { letter: "D", text: "Oferece 60 dias como meio-termo", points: 1 }
+        ],
+        correct: 1,
+        explanation: "'Política da empresa' é frequentemente testável. Se o prazo é inflexível, o preço pode ser ajustado para refletir o custo real da operação."
+      },
+      {
+        scenario: "Fogo",
+        text: "Você recebe uma proposta por e-mail com prazo de resposta de 24 horas.",
+        context: "É sexta-feira às 17h. O prazo vence sábado às 17h.",
+        options: [
+          { letter: "A", text: "Responde imediatamente para demonstrar interesse", points: 0 },
+          { letter: "B", text: "Responde na segunda com uma contraproposta bem estruturada", points: 3 },
+          { letter: "C", text: "Responde no sábado de manhã pedindo extensão do prazo", points: 1 },
+          { letter: "D", text: "Aceita a proposta para não perder a oportunidade", points: 0 }
+        ],
+        correct: 1,
+        explanation: "Prazo curto em final de semana é tática de pressão. Quem responde com pressa geralmente cede. Segunda-feira com contraproposta bem pensada é resposta de quem tem posição."
+      },
+      {
+        scenario: "Fogo",
+        text: "O outro lado concorda com tudo rapidamente. Não faz objeções.",
+        context: "Você está negociando um contrato de exclusividade de 2 anos.",
+        options: [
+          { letter: "A", text: "Fecha o contrato — concordância rápida é sinal de boa vontade", points: 0 },
+          { letter: "B", text: "Desconfia e revisa cláusulas que ele deveria ter questionado", points: 3 },
+          { letter: "C", text: "Pergunta se ele entendeu todos os termos", points: 1 },
+          { letter: "D", text: "Acelera o fechamento antes que ele mude de ideia", points: 0 }
+        ],
+        correct: 1,
+        explanation: "Concordância rápida demais em contrato longo geralmente significa que o outro lado não leu, não entendeu, ou não pretende cumprir. Revisar é proteção."
+      },
+      {
+        scenario: "Fogo",
+        text: "Durante a negociação, o outro lado começa a falar da vida pessoal.",
+        context: "Vocês estão discutindo os últimos 10% de diferença no preço.",
+        options: [
+          { letter: "A", text: "Acompanha o papo — relacionamento é importante", points: 0 },
+          { letter: "B", text: "Escuta, mas volta gentilmente ao ponto em aberto", points: 3 },
+          { letter: "C", text: "Corta o assunto e volta direto ao preço", points: 1 },
+          { letter: "D", text: "Usa a informação pessoal como âncora emocional para fechar", points: 0 }
+        ],
+        correct: 1,
+        explanation: "Desvio para assunto pessoal em momento decisivo pode ser tática de distração ou de construção de rapport. Escutar e voltar ao ponto mantém o controle sem ser grosseiro."
+      },
+      {
+        scenario: "Fogo",
+        text: "O contrato está pronto para assinar. O outro lado pede 'só mais uma coisinha'.",
+        context: "É a terceira 'coisinha' que ele pede nesta rodada.",
+        options: [
+          { letter: "A", text: "Aceita — está quase fechando, não vale a pena brigar", points: 0 },
+          { letter: "B", text: "Diz que cada 'coisinha' nova precisa de contrapartida", points: 3 },
+          { letter: "C", text: "Recusa educadamente e aponta que já houve concessões", points: 1 },
+          { letter: "D", text: "Pede tempo para avaliar o impacto da nova demanda", points: 2 }
+        ],
+        correct: 1,
+        explanation: "'Só mais uma coisinha' repetida é tática de salami — fatiar pedidos para não parecerem grandes, mas somarem muito. Cada novo pedido exige contrapartida."
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+    let shuffledQuestions = [];
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const app = document.getElementById('quiz-app');
+
+    function renderStart() {
+      app.innerHTML = `
+        <div class="start-screen">
+          <p>Você vai enfrentar 10 cenários baseados em situações reais de negociação. Não existe resposta perfeita — existe a escolha que revela seu padrão de decisão.</p>
+          <button class="btn btn-primary" onclick="startQuiz()">Iniciar Arena</button>
+        </div>
+      `;
+    }
+
+    function startQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      // Embaralha as opções de cada pergunta, reatribui letras A-D e atualiza índice correto
+      shuffledQuestions = questions.map(q => {
+        const shuffledOpts = shuffleArray(q.options);
+        // Reatribui letras A, B, C, D na ordem de cima para baixo
+        const letters = ["A", "B", "C", "D"];
+        shuffledOpts.forEach((opt, i) => { opt.letter = letters[i]; });
+        // Encontra o novo índice da resposta correta
+        const originalCorrect = q.options[q.correct];
+        const newCorrect = shuffledOpts.findIndex(opt => opt.text === originalCorrect.text);
+        return {
+          ...q,
+          options: shuffledOpts,
+          correct: newCorrect
+        };
+      });
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = shuffledQuestions[currentQuestion];
+      const progress = ((currentQuestion) / questions.length) * 100;
+
+      app.innerHTML = `
+        <div class="progress-bar">
+          <div class="progress-info">Cenário <span>${currentQuestion + 1}</span> / ${questions.length}</div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width: ${progress}%"></div>
+          </div>
+          <div class="score-display">${score} pts</div>
+        </div>
+        <div class="question-card">
+          <div class="question-label">${q.scenario}</div>
+          <div class="question-text">${q.text}</div>
+          <div class="question-context">${q.context}</div>
+          <div class="options" id="options">
+            ${q.options.map((opt, idx) => `
+              <button class="option" onclick="selectOption(${idx})">
+                <span class="option-letter">${opt.letter}</span>
+                <span class="option-text">${opt.text}</span>
+              </button>
+            `).join('')}
+          </div>
+          <div id="feedback"></div>
+        </div>
+      `;
+      answered = false;
+    }
+
+    function selectOption(index) {
+      if (answered) return;
+      answered = true;
+
+      const q = shuffledQuestions[currentQuestion];
+      const options = document.querySelectorAll('.option');
+      const feedbackDiv = document.getElementById('feedback');
+
+      options.forEach((opt, idx) => {
+        opt.classList.add('disabled');
+        if (idx === q.correct) {
+          opt.classList.add('correct');
+        } else if (idx === index && idx !== q.correct) {
+          opt.classList.add('wrong');
+        }
+      });
+
+      if (index === q.correct) {
+        score += q.options[index].points;
+        feedbackDiv.innerHTML = `
+          <div class="feedback correct">
+            <strong>✓ Leitura correta</strong>
+            ${q.explanation}
+          </div>
+        `;
+      } else {
+        feedbackDiv.innerHTML = `
+          <div class="feedback wrong">
+            <strong>✗ Leitura a ajustar</strong>
+            ${q.explanation}
+          </div>
+        `;
+      }
+
+      // Update score display
+      document.querySelector('.score-display').textContent = score + ' pts';
+
+      // Add next button
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'btn btn-primary next-btn';
+      nextBtn.textContent = currentQuestion < questions.length - 1 ? 'Próximo cenário →' : 'Ver resultado';
+      nextBtn.onclick = () => {
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          renderQuestion();
+        } else {
+          renderResult();
+        }
+      };
+      feedbackDiv.appendChild(nextBtn);
+    }
+
+    function renderResult() {
+      let title, desc, level;
+      const maxScore = shuffledQuestions.reduce((sum, q) => sum + Math.max(...q.options.map(o => o.points)), 0);
+      const percentage = Math.round((score / maxScore) * 100);
+
+      if (percentage >= 80) {
+        level = "Negociador de Elite";
+        title = "Você lê o jogo antes de entrar na mesa.";
+        desc = "Sua postura é de quem observa antes de reagir. Você entende que negociação é leitura, não discurso. Isso é raro.";
+      } else if (percentage >= 50) {
+        level = "Negociador em Formação";
+        title = "Você já enxerga o jogo — agora precisa parar de reagir a ele.";
+        desc = "Você percebe as armadilhas, mas às vezes ainda cai nelas por pressa ou por querer agradar. O próximo nível é sobre silêncio e perguntas.";
+      } else {
+        level = "Negociador em Construção";
+        title = "Você negocia com o coração — e o outro lado percebe.";
+        desc = "A boa notícia: consciência é o primeiro passo. A maioria das pessoas nunca para para pensar no padrão que repete. Você acabou de fazer isso.";
+      }
+
+      app.innerHTML = `
+        <div class="question-card result-card">
+          <div class="result-score">${percentage}%</div>
+          <div class="result-score-label">Nível de leitura</div>
+          <h2 class="result-title">${level}</h2>
+          <p class="result-desc">${title} ${desc}</p>
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="startQuiz()">Refazer Arena</button>
+            <a href="/batna-zopa.html" class="btn btn-outline">Calculadora BATNA/ZOPA</a>
+            <a href="/kit.html" class="btn btn-outline">Baixar Kit Gratuito</a>
+          </div>
+        </div>
+      `;
+    }
+
+    renderStart();
+  </script>
+</body>
+</html>
