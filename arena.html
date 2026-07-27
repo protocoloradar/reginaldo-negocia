@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Arena do Negociador — Teste suas habilidades em cenários reais de negociação.">
+  <title>Arena do Negociador | Reginaldo Negocia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --petroleo: #0B1D2E;
+      --petroleo-light: #122B42;
+      --petroleo-dark: #06121C;
+      --ouro: #C9A84C;
+      --ouro-light: #D4B76A;
+      --ouro-dark: #A68A3C;
+      --noir: #0A0A0A;
+      --text-primary: #F0F2F5;
+      --text-secondary: rgba(240, 242, 245, 0.65);
+      --text-muted: rgba(240, 242, 245, 0.4);
+      --border: rgba(201, 168, 76, 0.15);
+      --border-hover: rgba(201, 168, 76, 0.4);
+      --glass: rgba(11, 29, 46, 0.85);
+      --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--petroleo);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.2rem 4%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ouro);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+    .logo span { color: var(--text-primary); font-weight: 400; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--ouro);
+      transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--ouro); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links .highlight {
+      border: 1px solid var(--ouro);
+      padding: 0.5rem 1.2rem;
+      color: var(--ouro);
+      border-radius: 2px;
+    }
+    .nav-links .highlight::after { display: none; }
+    .nav-links .highlight:hover {
+      background: var(--ouro);
+      color: var(--petroleo-dark);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--ouro);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    section { padding: 6rem 4%; position: relative; }
+    .container { max-width: 800px; margin: 0 auto; }
+
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 4rem;
+    }
+    .section-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--ouro);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-title em { font-style: italic; color: var(--ouro); }
+    .section-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Quiz */
+    .quiz-container {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 3rem;
+      position: relative;
+    }
+    .quiz-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+    }
+
+    .quiz-progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      gap: 0.5rem;
+    }
+    .progress-dot {
+      flex: 1;
+      height: 4px;
+      background: var(--petroleo-light);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+    .progress-dot.active { background: var(--ouro); }
+    .progress-dot.correct { background: #4ADE80; }
+    .progress-dot.wrong { background: #F87171; }
+
+    .quiz-question {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .quiz-option {
+      background: var(--petroleo-dark);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'Inter', sans-serif;
+    }
+    .quiz-option:hover {
+      border-color: var(--border-hover);
+      background: rgba(201, 168, 76, 0.05);
+    }
+    .quiz-option.selected {
+      border-color: var(--ouro);
+      background: rgba(201, 168, 76, 0.08);
+      color: var(--text-primary);
+    }
+    .quiz-option.correct {
+      border-color: #4ADE80;
+      background: rgba(74, 222, 128, 0.08);
+      color: var(--text-primary);
+    }
+    .quiz-option.wrong {
+      border-color: #F87171;
+      background: rgba(248, 113, 113, 0.08);
+    }
+
+    .option-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--petroleo-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: var(--ouro);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    .quiz-option.correct .option-letter {
+      background: #4ADE80;
+      color: var(--petroleo-dark);
+    }
+    .quiz-option.wrong .option-letter {
+      background: #F87171;
+      color: var(--white);
+    }
+
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .quiz-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 1rem 2.5rem;
+      border-radius: 2px;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+    }
+    .quiz-btn-next {
+      background: var(--ouro);
+      color: var(--petroleo-dark);
+    }
+    .quiz-btn-next:hover {
+      background: var(--ouro-light);
+      transform: translateY(-2px);
+    }
+    .quiz-btn-next:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .quiz-btn-prev {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .quiz-btn-prev:hover {
+      border-color: var(--ouro);
+      color: var(--ouro);
+    }
+
+    /* Resultado */
+    .quiz-result {
+      text-align: center;
+      padding: 2rem 0;
+      display: none;
+    }
+    .quiz-result.show { display: block; }
+
+    .result-score {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--ouro);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .result-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .result-desc {
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* CORREÇÃO 1: Links do resultado em dourado */
+    .result-links {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .result-links a {
+      color: var(--ouro);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.85rem;
+      padding: 0.875rem 1.75rem;
+      border: 1px solid var(--ouro);
+      border-radius: 2px;
+      transition: var(--transition);
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .result-links a:hover {
+      background: var(--ouro);
+      color: var(--petroleo-dark);
+    }
+
+    footer {
+      background: var(--noir);
+      border-top: 1px solid var(--border);
+      padding: 4rem 4% 2rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-brand .logo {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 300px;
+    }
+    .footer-col h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--ouro);
+      margin-bottom: 1.5rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.75rem; }
+    .footer-col a {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .footer-col a:hover { color: var(--ouro); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .footer-social {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .footer-social a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: var(--transition);
+    }
+    .footer-social a:hover { color: var(--ouro); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      section { padding: 4rem 6%; }
+      .quiz-container { padding: 1.5rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .result-links { flex-direction: column; align-items: center; }
+      .result-links a { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Reginaldo <span>Negocia</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/arena.html">Arena</a></li>
+      <li><a href="/batna-zopa.html">BATNA/ZOPA</a></li>
+      <li><a href="/prep-ia.html">Prep com IA</a></li>
+      <li><a href="/kit.html">Kit Gratuito</a></li>
+      <li><a href="/sobre.html">Sobre</a></li>
+      <li><a href="/contato.html" class="highlight">Contato</a></li>
+    </ul>
+    <button class="mobile-menu-btn" aria-label="Menu">☰</button>
+  </nav>
+
+  <section style="padding-top: 8rem;">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Teste de Habilidade</p>
+        <h2 class="section-title">Arena do <em>Negociador</em></h2>
+        <p class="section-desc">
+          10 cenários reais. Responda com honestidade e descubra seu nível real como negociador.
+        </p>
+      </div>
+
+      <div class="quiz-container">
+        <div class="quiz-progress" id="quizProgress"></div>
+        <div id="quizContent">
+          <div class="quiz-question" id="quizQuestion"></div>
+          <div class="quiz-options" id="quizOptions"></div>
+          <div class="quiz-nav">
+            <button class="quiz-btn quiz-btn-prev" id="btnPrev" onclick="prevQuestion()" style="visibility:hidden;">Anterior</button>
+            <button class="quiz-btn quiz-btn-next" id="btnNext" onclick="nextQuestion()" disabled>Próxima</button>
+          </div>
+        </div>
+        <div id="quizResult" class="quiz-result"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo">Reginaldo <span>Negocia</span></a>
+        <p>Presença, leitura e posicionamento na prática. Para quem precisa decidir, vender, comprar e negociar com mais controle.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Ferramentas</h4>
+        <ul>
+          <li><a href="/arena.html">Arena do Negociador</a></li>
+          <li><a href="/batna-zopa.html">Calculadora BATNA/ZOPA</a></li>
+          <li><a href="/prep-ia.html">Prep com IA</a></li>
+          <li><a href="/kit.html">Kit de Decisão</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Institucional</h4>
+        <ul>
+          <li><a href="/sobre.html">Sobre</a></li>
+          <li><a href="/contato.html">Contato</a></li>
+          <li><a href="/privacidade.html">Privacidade</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Conecte-se</h4>
+        <ul>
+          <li><a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Reginaldo Negocia. Todos os direitos reservados.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ========================
+    // CORREÇÃO 2: EMBARALHAMENTO DAS RESPOSTAS
+    // ========================
+
+    const quizData = [
+      {
+        question: "Você está negociando um contrato de fornecimento. A outra parte pede um desconto de 20% às vésperas do fechamento. Qual sua primeira reação?",
+        options: [
+          { text: "Aceito o desconto para não perder o negócio.", correct: false },
+          { text: "Questiono o motivo da mudança e reviso o valor total do acordo.", correct: true },
+          { text: "Recuso imediatamente e ameaço encerrar a negociação.", correct: false },
+          { text: "Peço tempo para analisar e consulto minha equipe.", correct: false }
+        ]
+      },
+      {
+        question: "Em uma negociação salarial, o candidato pede 30% acima do orçamento. O que você faz?",
+        options: [
+          { text: "Diz que não há margem e mantém a oferta original.", correct: false },
+          { text: "Pergunta quais critérios justificam esse valor e explora alternativas não-monetárias.", correct: true },
+          { text: "Divide a diferença e faz uma contra-oferta no meio.", correct: false },
+          { text: "Aceita o valor para garantir o talento.", correct: false }
+        ]
+      },
+      {
+        question: "A outra parte usa a tática do 'ultimato' com prazo de 24 horas. Como você reage?",
+        options: [
+          { text: "Aceita a pressão e decide sob estresse.", correct: false },
+          { text: "Analisa se o prazo é real ou artificial, e testa sua BATNA.", correct: true },
+          { text: "Ignora o prazo e continua negociando normalmente.", correct: false },
+          { text: "Contra-ataca com um ultimato próprio.", correct: false }
+        ]
+      },
+      {
+        question: "Durante uma negociação, a outra parte fica em silêncio após sua proposta. O que você faz?",
+        options: [
+          { text: "Quebra o silêncio com uma concessão para facilitar.", correct: false },
+          { text: "Mantém o silêncio e espera a reação deles.", correct: true },
+          { text: "Repete a proposta com outras palavras.", correct: false },
+          { text: "Faz uma nova proposta mais vantajosa para a outra parte.", correct: false }
+        ]
+      },
+      {
+        question: "Você descobre que a outra parte tem uma BATNA melhor do que imaginava. Qual sua estratégia?",
+        options: [
+          { text: "Desiste da negociação imediatamente.", correct: false },
+          { text: "Reforça o valor diferencial da sua proposta que a BATNA não oferece.", correct: true },
+          { text: "Aumenta sua oferta para superar a BATNA dela.", correct: false },
+          { text: "Usa informação privilegiada para desqualificar a BATNA.", correct: false }
+        ]
+      },
+      {
+        question: "Em uma negociação multiparte, dois concorrentes oferecem preços similares. Como você se diferencia?",
+        options: [
+          { text: "Abaixa o preço para ganhar.", correct: false },
+          { text: "Cria pacotes de valor agregado que vão além do preço.", correct: true },
+          { text: "Criticar os concorrentes diretamente.", correct: false },
+          { text: "Insiste nos diferenciais técnicos sem adaptar à necessidade do cliente.", correct: false }
+        ]
+      },
+      {
+        question: "A outra parte faz uma exigência que viola seus princípios. Qual sua postura?",
+        options: [
+          { text: "Aceita para manter o relacionamento.", correct: false },
+          { text: "Recusa com base em princípios e propõe alternativas éticas.", correct: true },
+          { text: "Recusa sem explicação.", correct: false },
+          { text: "Aceita condicionalmente, planejando reverter depois.", correct: false }
+        ]
+      },
+      {
+        question: "No final de uma negociação longa, a outra parte pede 'só mais uma coisinha'. O que você faz?",
+        options: [
+          { text: "Concede para fechar logo.", correct: false },
+          { text: "Troca essa concessão por algo equivalente em valor.", correct: true },
+          { text: "Recusa todas as novas demandas.", correct: false },
+          { text: "Aceita, mas registra como favor a ser cobrado depois.", correct: false }
+        ]
+      },
+      {
+        question: "Você percebe que a outra parte está emocionalmente sobrecarregada. Como procede?",
+        options: [
+          { text: "Aproveita a vulnerabilidade para pressionar.", correct: false },
+          { text: "Sugere uma pausa e retoma quando ambos estiverem mais equilibrados.", correct: true },
+          { text: "Ignora e continua com a lógica do negócio.", correct: false },
+          { text: "Chama um terceiro para decidir por vocês.", correct: false }
+        ]
+      },
+      {
+        question: "Sua meta é fechar em R$ 100 mil, mas a outra parte oferece R$ 85 mil. Qual sua jogada?",
+        options: [
+          { text: "Aceita R$ 85 mil para não perder o negócio.", correct: false },
+          { text: "Apresenta dados de mercado e propõe R$ 95 mil com condições diferenciadas.", correct: true },
+          { text: "Insiste em R$ 100 mil sem flexibilidade.", correct: false },
+          { text: "Oferece R$ 90 mil como última palavra.", correct: false }
+        ]
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let selectedOption = null;
+    let answered = false;
+    let shuffledQuestions = [];
+
+    // Fisher-Yates shuffle
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function initQuiz() {
+      // Embaralha as opções de CADA pergunta
+      shuffledQuestions = quizData.map(q => {
+        return {
+          question: q.question,
+          options: shuffleArray(q.options)
+        };
+      });
+      currentQuestion = 0;
+      score = 0;
+      renderProgress();
+      renderQuestion();
+    }
+
+    function renderProgress() {
+      const progressEl = document.getElementById('quizProgress');
+      progressEl.innerHTML = '';
+      for (let i = 0; i < shuffledQuestions.length; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'progress-dot' + (i === currentQuestion ? ' active' : '');
+        dot.id = 'dot-' + i;
+        progressEl.appendChild(dot);
+      }
+    }
+
+    function renderQuestion() {
+      const q = shuffledQuestions[currentQuestion];
+      document.getElementById('quizQuestion').textContent = q.question;
+
+      const optionsEl = document.getElementById('quizOptions');
+      optionsEl.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + idx)}</span><span>${opt.text}</span>`;
+        btn.onclick = () => selectOption(idx);
+        optionsEl.appendChild(btn);
+      });
+
+      selectedOption = null;
+      answered = false;
+      document.getElementById('btnNext').disabled = true;
+      document.getElementById('btnNext').textContent = currentQuestion === shuffledQuestions.length - 1 ? 'Ver Resultado' : 'Próxima';
+      document.getElementById('btnPrev').style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
+    }
+
+    function selectOption(idx) {
+      if (answered) return;
+      selectedOption = idx;
+      const options = document.querySelectorAll('.quiz-option');
+      options.forEach((opt, i) => {
+        opt.classList.toggle('selected', i === idx);
+      });
+      document.getElementById('btnNext').disabled = false;
+    }
+
+    function nextQuestion() {
+      if (selectedOption === null) return;
+
+      if (!answered) {
+        const q = shuffledQuestions[currentQuestion];
+        const isCorrect = q.options[selectedOption].correct;
+
+        const options = document.querySelectorAll('.quiz-option');
+        options.forEach((opt, i) => {
+          opt.classList.remove('selected');
+          if (q.options[i].correct) {
+            opt.classList.add('correct');
+          } else if (i === selectedOption && !isCorrect) {
+            opt.classList.add('wrong');
+          }
+          opt.onclick = null;
+          opt.style.cursor = 'default';
+        });
+
+        const dot = document.getElementById('dot-' + currentQuestion);
+        dot.classList.remove('active');
+        dot.classList.add(isCorrect ? 'correct' : 'wrong');
+
+        if (isCorrect) score++;
+        answered = true;
+
+        if (currentQuestion === shuffledQuestions.length - 1) {
+          document.getElementById('btnNext').textContent = 'Ver Resultado';
+        }
+        return;
+      }
+
+      currentQuestion++;
+      if (currentQuestion >= shuffledQuestions.length) {
+        showResult();
+      } else {
+        renderProgress();
+        renderQuestion();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderProgress();
+        renderQuestion();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('quizContent').style.display = 'none';
+      const resultEl = document.getElementById('quizResult');
+      resultEl.classList.add('show');
+
+      const percentage = Math.round((score / shuffledQuestions.length) * 100);
+      let title, desc, links;
+
+      if (percentage >= 80) {
+        title = 'Negociador Estratégico';
+        desc = 'Você domina os princípios da negociação baseada em interesses. Sabe quando ceder, quando firmar e como criar valor. O próximo nível é sobre leitura de mesa e gestão de multiparte.';
+        links = `<a href="/batna-zopa.html">Calculadora BATNA/ZOPA</a><a href="/kit.html">Baixar Kit Avançado</a>`;
+      } else if (percentage >= 50) {
+        title = 'Negociador em Formação';
+        desc = 'Você já enxerga o jogo — agora precisa parar de reagir a ele. Você percebe as armadilhas, mas às vezes ainda cai nelas por pressa ou por querer agradar. O próximo nível é sobre silêncio e perguntas.';
+        links = `<a href="/arena.html" onclick="initQuiz(); return false;">Refazer Arena</a><a href="/batna-zopa.html">Calculadora BATNA/ZOPA</a><a href="/kit.html">Baixar Kit Gratuito</a>`;
+      } else {
+        title = 'Negociador em Despertar';
+        desc = 'Você ainda negocia muito por impulso e emoção. A boa notícia: reconhecer isso é o primeiro passo. Com as ferramentas certas, você pode evoluir rápido. Comece pelo básico.';
+        links = `<a href="/kit.html">Baixar Kit de Decisão</a><a href="/arena.html" onclick="initQuiz(); return false;">Refazer Arena</a>`;
+      }
+
+      resultEl.innerHTML = `
+        <div class="result-score">${percentage}%</div>
+        <div class="result-title">${title}</div>
+        <div class="result-desc">${desc}</div>
+        <div class="result-links">${links}</div>
+      `;
+    }
+
+    initQuiz();
+  </script>
+</body>
+</html>
