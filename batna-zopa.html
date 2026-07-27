@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calculadora BATNA/ZOPA — Mapeie seu poder de barganha antes de sentar à mesa.">
+  <title>Calculadora BATNA/ZOPA | Reginaldo Negocia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --petroleo: #0B1D2E;
+      --petroleo-light: #122B42;
+      --petroleo-dark: #06121C;
+      --ouro: #C9A84C;
+      --ouro-light: #D4B76A;
+      --ouro-dark: #A68A3C;
+      --noir: #0A0A0A;
+      --text-primary: #F0F2F5;
+      --text-secondary: rgba(240, 242, 245, 0.65);
+      --text-muted: rgba(240, 242, 245, 0.4);
+      --border: rgba(201, 168, 76, 0.15);
+      --border-hover: rgba(201, 168, 76, 0.4);
+      --glass: rgba(11, 29, 46, 0.85);
+      --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --success: #4CAF50;
+      --danger: #C94C4C;
+      --warning: #FF9800;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--petroleo);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--petroleo-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--ouro-dark); border-radius: 3px; }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.2rem 4%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--ouro);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+    }
+    .logo span { color: var(--text-primary); font-weight: 400; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--ouro);
+      transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--ouro); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links .highlight {
+      border: 1px solid var(--ouro);
+      padding: 0.5rem 1.2rem;
+      color: var(--ouro);
+      border-radius: 2px;
+    }
+    .nav-links .highlight::after { display: none; }
+    .nav-links .highlight:hover {
+      background: var(--ouro);
+      color: var(--petroleo-dark);
+    }
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--ouro);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .page-header {
+      padding: 10rem 4% 4rem;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .page-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--ouro);
+      margin-bottom: 1rem;
+    }
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+    .page-title em { font-style: italic; color: var(--ouro); }
+    .page-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .calc-container {
+      max-width: 700px;
+      margin: 0 auto 6rem;
+      padding: 0 4%;
+    }
+
+    .calc-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .calc-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .calc-card-icon {
+      font-size: 1.2rem;
+    }
+
+    .calc-card-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--ouro);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      padding: 1rem 1.2rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-primary);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .form-group input:focus {
+      border-color: var(--ouro);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .form-group .hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .calc-btn {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .result-panel {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.5rem;
+      margin-top: 2rem;
+      animation: fadeIn 0.5s ease;
+      display: none;
+    }
+
+    .result-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .result-item {
+      text-align: center;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .result-item-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .result-item-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--ouro);
+    }
+
+    .zopa-bar {
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .zopa-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .zopa-track {
+      position: relative;
+      height: 40px;
+      background: linear-gradient(to right, 
+        rgba(201, 76, 76, 0.2) 0%, 
+        rgba(201, 168, 76, 0.3) 50%, 
+        rgba(76, 175, 80, 0.2) 100%);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .zopa-zone {
+      position: absolute;
+      top: 0; bottom: 0;
+      background: rgba(201, 168, 76, 0.25);
+      border-left: 2px dashed var(--ouro);
+      border-right: 2px dashed var(--ouro);
+    }
+
+    .zopa-marker {
+      position: absolute;
+      top: -8px;
+      transform: translateX(-50%);
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .zopa-marker::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 24px;
+      background: var(--ouro);
+    }
+
+    .analysis {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .analysis h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      color: var(--ouro);
+    }
+
+    .analysis p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+
+    .analysis ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .analysis li {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      padding: 0.4rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .analysis li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--ouro);
+    }
+
+    footer {
+      background: var(--noir);
+      border-top: 1px solid var(--border);
+      padding: 4rem 4% 2rem;
+      margin-top: auto;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-brand .logo {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 300px;
+    }
+    .footer-col h4 {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--ouro);
+      margin-bottom: 1.5rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.75rem; }
+    .footer-col a {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .footer-col a:hover { color: var(--ouro); }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .footer-social { display: flex; gap: 1.5rem; }
+    .footer-social a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: var(--transition);
+    }
+    .footer-social a:hover { color: var(--ouro); }
+
+    @media (max-width: 1024px) {
+      .result-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      .page-header { padding: 8rem 6% 3rem; }
+      .calc-card { padding: 1.5rem; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Reginaldo <span>Negocia</span></a>
+    <ul class="nav-links">
+      <li><a href="/">Início</a></li>
+      <li><a href="/arena.html">Arena</a></li>
+      <li><a href="/batna-zopa.html">BATNA/ZOPA</a></li>
+      <li><a href="/prep-ia.html">Prep com IA</a></li>
+      <li><a href="/kit.html">Kit Gratuito</a></li>
+      <li><a href="/sobre.html">Sobre</a></li>
+      <li><a href="/contato.html" class="highlight">Contato</a></li>
+    </ul>
+    <button class="mobile-menu-btn">☰</button>
+  </nav>
+
+  <div class="page-header">
+    <p class="page-eyebrow">⚖️ Calculadora BATNA/ZOPA</p>
+    <h1 class="page-title">Mapeie seu <em>poder de barganha</em> antes de sentar à mesa.</h1>
+    <p class="page-desc">Quem conhece seus limites antes da conversa não precisa descobri-los durante ela.</p>
+  </div>
+
+  <div class="calc-container">
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <span class="calc-card-icon">🎯</span>
+        <span class="calc-card-title">Sua Posição</span>
+      </div>
+
+      <div class="form-group">
+        <label for="seu-alvo">Valor alvo (o que você quer conseguir)</label>
+        <input type="number" id="seu-alvo" placeholder="Ex: 150000">
+        <div class="hint">O valor ideal que você gostaria de fechar.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="seu-piso">Seu limite mínimo aceitável (piso)</label>
+        <input type="number" id="seu-piso" placeholder="Ex: 120000">
+        <div class="hint">Abaixo disso, é melhor não fechar.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="seu-batna">Sua melhor alternativa se não fechar (BATNA)</label>
+        <input type="number" id="seu-batna" placeholder="Ex: 110000">
+        <div class="hint">Best Alternative To a Negotiated Agreement — o que você consegue sozinho.</div>
+      </div>
+    </div>
+
+    <div class="calc-card">
+      <div class="calc-card-header">
+        <span class="calc-card-icon">🔍</span>
+        <span class="calc-card-title">Estimativa do Outro Lado</span>
+      </div>
+
+      <div class="form-group">
+        <label for="teto-deles">Valor máximo que o outro lado pagaria (teto deles)</label>
+        <input type="number" id="teto-deles" placeholder="Ex: 180000">
+        <div class="hint">O máximo que eles poderiam aceitar pagar.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="piso-deles">Limite mínimo que o outro lado aceitaria (piso deles)</label>
+        <input type="number" id="piso-deles" placeholder="Ex: 130000">
+        <div class="hint">Abaixo disso, eles preferem não fechar.</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary calc-btn" onclick="calcular()">Calcular →</button>
+
+    <div class="result-panel" id="resultado">
+      <div class="result-title">Mapa da sua negociação</div>
+
+      <div class="result-grid">
+        <div class="result-item">
+          <div class="result-item-label">Sua ZOPA</div>
+          <div class="result-item-value" id="zopa-min">—</div>
+        </div>
+        <div class="result-item">
+          <div class="result-item-label">Até</div>
+          <div class="result-item-value" id="zopa-max">—</div>
+        </div>
+        <div class="result-item">
+          <div class="result-item-label">Seu poder de barganha</div>
+          <div class="result-item-value" id="poder">—</div>
+        </div>
+        <div class="result-item">
+          <div class="result-item-label">Recomendação</div>
+          <div class="result-item-value" id="recomendacao" style="font-size: 1.2rem;">—</div>
+        </div>
+      </div>
+
+      <div class="zopa-bar">
+        <div class="zopa-label">Zona de Acordo Possível (ZOPA)</div>
+        <div class="zopa-track" id="zopa-track"></div>
+      </div>
+
+      <div class="analysis" id="analise"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo">Reginaldo <span>Negocia</span></a>
+        <p>Presença, leitura e posicionamento na prática. Para quem precisa decidir, vender, comprar e negociar com mais controle.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Ferramentas</h4>
+        <ul>
+          <li><a href="/arena.html">Arena do Negociador</a></li>
+          <li><a href="/batna-zopa.html">Calculadora BATNA/ZOPA</a></li>
+          <li><a href="/prep-ia.html">Prep com IA</a></li>
+          <li><a href="/kit.html">Kit de Decisão</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Institucional</h4>
+        <ul>
+          <li><a href="/sobre.html">Sobre</a></li>
+          <li><a href="/contato.html">Contato</a></li>
+          <li><a href="/privacidade.html">Privacidade</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Conecte-se</h4>
+        <ul>
+          <li><a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Reginaldo Negocia. Todos os direitos reservados.</p>
+      <div class="footer-social">
+        <a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(value);
+    }
+
+    function calcular() {
+      const seuAlvo = parseFloat(document.getElementById('seu-alvo').value) || 0;
+      const seuPiso = parseFloat(document.getElementById('seu-piso').value) || 0;
+      const seuBatna = parseFloat(document.getElementById('seu-batna').value) || 0;
+      const tetoDeles = parseFloat(document.getElementById('teto-deles').value) || 0;
+      const pisoDeles = parseFloat(document.getElementById('piso-deles').value) || 0;
+
+      if (!seuPiso || !pisoDeles || !tetoDeles) {
+        alert('Preencha pelo menos: Seu piso, Teto deles e Piso deles.');
+        return;
+      }
+
+      // ZOPA = overlap entre [seu piso, seu alvo] e [piso deles, teto deles]
+      const zopaMin = Math.max(seuPiso, pisoDeles);
+      const zopaMax = Math.min(seuAlvo || tetoDeles, tetoDeles);
+      const hasZopa = zopaMin <= zopaMax;
+
+      // Poder de barganha
+      let poderTexto, recomendacao, corPoder;
+      const batnaGap = seuBatna > 0 ? (seuPiso - seuBatna) / seuBatna : 0;
+      const range = tetoDeles - pisoDeles;
+      const suaPosicao = (seuAlvo - pisoDeles) / (range || 1);
+
+      if (hasZopa) {
+        if (suaPosicao > 0.7) {
+          poderTexto = "Forte";
+          recomendacao = "Agressivo";
+          corPoder = "#4CAF50";
+        } else if (suaPosicao > 0.4) {
+          poderTexto = "Equilibrado";
+          recomendacao = "Colaborativo";
+          corPoder = "#C9A84C";
+        } else {
+          poderTexto = "Limitado";
+          recomendacao = "Conservador";
+          corPoder = "#FF9800";
+        }
+      } else {
+        poderTexto = "Sem ZOPA";
+        recomendacao = "Reavalie";
+        corPoder = "#C94C4C";
+      }
+
+      // Update display
+      document.getElementById('zopa-min').textContent = hasZopa ? formatCurrency(zopaMin) : '—';
+      document.getElementById('zopa-max').textContent = hasZopa ? formatCurrency(zopaMax) : '—';
+      document.getElementById('poder').textContent = poderTexto;
+      document.getElementById('poder').style.color = corPoder;
+      document.getElementById('recomendacao').textContent = recomendacao;
+      document.getElementById('recomendacao').style.color = corPoder;
+
+      // ZOPA bar visualization
+      const track = document.getElementById('zopa-track');
+      const minVal = Math.min(seuPiso, pisoDeles, seuBatna);
+      const maxVal = Math.max(seuAlvo || tetoDeles, tetoDeles);
+      const rangeTotal = maxVal - minVal || 1;
+
+      let markersHTML = '';
+
+      if (hasZopa) {
+        const leftPct = ((zopaMin - minVal) / rangeTotal) * 100;
+        const widthPct = ((zopaMax - zopaMin) / rangeTotal) * 100;
+        markersHTML += `<div class="zopa-zone" style="left: ${leftPct}%; width: ${widthPct}%;"></div>`;
+      }
+
+      // Add markers
+      const markers = [
+        { val: seuBatna, label: 'Sua BATNA' },
+        { val: seuPiso, label: 'Seu piso' },
+        { val: seuAlvo, label: 'Seu alvo' },
+        { val: pisoDeles, label: 'Piso deles' },
+        { val: tetoDeles, label: 'Teto deles' }
+      ];
+
+      markers.forEach(m => {
+        if (m.val > 0) {
+          const pct = ((m.val - minVal) / rangeTotal) * 100;
+          markersHTML += `<div class="zopa-marker" style="left: ${pct}%;">${m.label}<br>${formatCurrency(m.val)}</div>`;
+        }
+      });
+
+      track.innerHTML = markersHTML;
+
+      // Analysis
+      const analise = document.getElementById('analise');
+      let analiseHTML = '<h4>Análise estratégica</h4>';
+
+      if (!hasZopa) {
+        analiseHTML += `<p><strong>⚠️ Atenção:</strong> Não existe ZOPA entre as posições. Ou você precisa reavaliar seus limites, ou essa negociação não deve acontecer.</p>`;
+      } else {
+        analiseHTML += `<p><strong>✓ Existe espaço de acordo.</strong> A ZOPA vai de ${formatCurrency(zopaMin)} a ${formatCurrency(zopaMax)}.</p>`;
+
+        if (seuBatna > 0) {
+          const batnaVsZopa = seuBatna >= zopaMin;
+          if (batnaVsZopa) {
+            analiseHTML += `<p>Sua BATNA (${formatCurrency(seuBatna)}) é <strong>melhor que o início da ZOPA</strong>. Você tem poder real para sair da mesa.</p>`;
+          } else {
+            analiseHTML += `<p>Sua BATNA (${formatCurrency(seuBatna)}) está <strong>abaixo da ZOPA</strong>. Fechar dentro da zona ainda é melhor que sua alternativa.</p>`;
+          }
+        }
+
+        analiseHTML += `<ul>`;
+        if (suaPosicao > 0.7) {
+          analiseHTML += `<li>Você está próximo do teto deles — cuidado para não parecer ganancioso.</li>`;
+          analiseHTML += `<li>Use o silêncio como ferramenta. Quem tem poder não precisa falar muito.</li>`;
+        } else if (suaPosicao > 0.4) {
+          analiseHTML += `<li>Posição equilibrada. O jogo está aberto para ambos os lados.</li>`;
+          analiseHTML += `<li>Foque no que você pode incluir além do preço: prazo, pagamento, entrega.</li>`;
+        } else {
+          analiseHTML += `<li>Você está perto do piso deles — eles têm mais poder de barganha.</li>`;
+          analiseHTML += `<li>Busque contrapartidas: o que eles podem oferecer além do valor?</li>`;
+        }
+        analiseHTML += `<li>Seu alvo (${formatCurrency(seuAlvo)}) deve ser sua <strong>primeira oferta</strong>, não sua posição final.</li>`;
+        analiseHTML += `</ul>`;
+      }
+
+      analise.innerHTML = analiseHTML;
+      document.getElementById('resultado').classList.add('active');
+      document.getElementById('resultado').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  </script>
+</body>
+</html>

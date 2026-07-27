@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kit de Decisão Gratuito — Como ler o jogo antes de entrar nele. Checklist, mini-ebook e roteiro de perguntas.">
-  <title>Kit de Decisão Gratuito | Reginaldo Negocia</title>
+  <meta name="description" content="Política de Privacidade — Reginaldo Negocia. Conformidade com a LGPD.">
+  <title>Política de Privacidade | Reginaldo Negocia</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,216 +146,86 @@
       line-height: 1.7;
     }
 
-    .kit-container {
-      max-width: 900px;
+    .privacy-container {
+      max-width: 800px;
       margin: 0 auto 6rem;
       padding: 0 4%;
     }
 
-    .kit-hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-      margin-bottom: 4rem;
+    .privacy-section {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
     }
 
-    .kit-visual {
-      background: linear-gradient(135deg, var(--petroleo-light), var(--petroleo));
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      aspect-ratio: 3/4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    .privacy-section:last-child {
+      border-bottom: none;
     }
 
-    .kit-visual::before {
-      content: '';
-      position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(201, 168, 76, 0.05), transparent 60%);
-    }
-
-    .kit-visual h3 {
+    .privacy-section h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
+      font-size: 1.4rem;
       font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .kit-visual .subtitle {
-      font-size: 0.9rem;
+      margin-bottom: 1rem;
       color: var(--ouro);
+    }
+
+    .privacy-section h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 3px;
-      position: relative;
-      z-index: 1;
+      letter-spacing: 1px;
+      margin-bottom: 0.75rem;
+      margin-top: 1.5rem;
+      color: var(--text-primary);
     }
 
-    .kit-visual .line {
-      width: 60px;
-      height: 1px;
-      background: var(--ouro);
-      margin: 1.5rem auto;
-      position: relative;
-      z-index: 1;
+    .privacy-section p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1rem;
     }
 
-    .kit-visual .author {
+    .privacy-section ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1rem;
+    }
+
+    .privacy-section li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      padding-left: 1.2rem;
+      position: relative;
+      margin-bottom: 0.5rem;
+    }
+
+    .privacy-section li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--ouro);
+    }
+
+    .privacy-section a {
+      color: var(--ouro);
+      text-decoration: underline;
+    }
+
+    .privacy-section a:hover {
+      color: var(--ouro-light);
+    }
+
+    .update-date {
       font-size: 0.8rem;
       color: var(--text-muted);
-      position: relative;
-      z-index: 1;
-    }
-
-    .kit-form-section h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
-      font-weight: 400;
-      margin-bottom: 1rem;
-    }
-
-    .kit-form-section p {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      margin-bottom: 2rem;
-    }
-
-    .kit-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .kit-form input[type="email"] {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
-      padding: 1rem 1.5rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      color: var(--text-primary);
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .kit-form input[type="email"]::placeholder { color: var(--text-muted); }
-    .kit-form input[type="email"]:focus {
-      border-color: var(--ouro);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .checkbox-group {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 0.5rem 0;
-    }
-
-    .checkbox-group input[type="checkbox"] {
-      width: 16px; height: 16px;
-      margin-top: 2px;
-      accent-color: var(--ouro);
-      cursor: pointer;
-    }
-
-    .checkbox-group label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-      cursor: pointer;
-    }
-
-    .checkbox-group label a { color: var(--ouro); text-decoration: underline; }
-
-    .kit-form button { width: 100%; margin-top: 0.5rem; }
-
-    .kit-note {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      margin-top: 1rem;
-    }
-
-    .kit-contents {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .content-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .content-card .icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    .content-card h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .content-card p {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .btn {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      padding: 1rem 2.5rem;
-      text-decoration: none;
-      border-radius: 2px;
-      transition: var(--transition);
-      cursor: pointer;
-      border: none;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: var(--ouro);
-      color: var(--petroleo-dark);
-    }
-
-    .btn-primary:hover {
-      background: var(--ouro-light);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 40px rgba(201, 168, 76, 0.2);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--ouro);
-      border: 1px solid var(--ouro);
-    }
-
-    .btn-outline:hover {
-      background: var(--ouro);
-      color: var(--petroleo-dark);
+      font-style: italic;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
     }
 
     footer {
@@ -425,9 +295,6 @@
     .footer-social a:hover { color: var(--ouro); }
 
     @media (max-width: 1024px) {
-      .kit-hero { grid-template-columns: 1fr; }
-      .kit-visual { max-width: 300px; margin: 0 auto; }
-      .kit-contents { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
@@ -456,60 +323,94 @@
   </nav>
 
   <div class="page-header">
-    <p class="page-eyebrow">📥 Material Exclusivo</p>
-    <h1 class="page-title">Kit de Decisão:<br><em>Como ler o jogo antes de entrar nele</em></h1>
-    <p class="page-desc">Presença, leitura e posicionamento na prática. Checklist + Mini Ebook + Roteiro de Perguntas. Gratuito.</p>
+    <p class="page-eyebrow">Legal</p>
+    <h1 class="page-title">Política de <em>Privacidade</em></h1>
+    <p class="page-desc">Como coletamos, usamos e protegemos seus dados. Em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018).</p>
   </div>
 
-  <div class="kit-container">
-    <div class="kit-hero">
-      <div class="kit-visual">
-        <h3>COMO LER<br>O JOGO</h3>
-        <span class="subtitle">Antes de entrar nele</span>
-        <div class="line"></div>
-        <span class="author">by Reginaldo Negocia</span>
-      </div>
-      <div class="kit-form-section">
-        <h2>Baixe agora. É gratuito.</h2>
-        <p>O Kit de Decisão foi criado para quem precisa enxergar o jogo antes de sentar à mesa. Não são frases bonitas — são perguntas que mudam o rumo da conversa, checklists que organizam sua cabeça, e leituras sobre erros silenciosos que custam caro.</p>
-
-        <form class="kit-form" action="https://formspree.io/f/xbdwnjav" method="POST">
-          <input type="hidden" name="_subject" value="[Kit de Decisão] Nova solicitação">
-          <input type="hidden" name="origem" value="kit_page">
-
-          <input type="email" name="email" placeholder="Seu melhor e-mail" required>
-
-          <div class="checkbox-group">
-            <input type="checkbox" id="lgpd" name="lgpd_consent" required>
-            <label for="lgpd">
-              Concordo em receber o Kit de Decisão e comunicações sobre negociação. 
-              Li e aceito a <a href="/privacidade.html">Política de Privacidade</a>.
-            </label>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Quero receber o Kit</button>
-        </form>
-
-        <p class="kit-note">PDF enviado em até 5 minutos. Sem spam. Sem enrolação.</p>
-      </div>
+  <div class="privacy-container">
+    <div class="privacy-section">
+      <h2>1. Quem somos</h2>
+      <p>Reginaldo Negocia é um projeto de Reginaldo D'Elboux Lourenço, dedicado a estratégia, leitura humana e posicionamento em negociações. Este site é operado com o propósito de oferecer ferramentas, conteúdo e serviços relacionados à arte de negociar com mais controle.</p>
+      <p><strong>Responsável pelo tratamento de dados:</strong> Reginaldo D'Elboux Lourenço</p>
+      <p><strong>E-mail de contato:</strong> reginaldonegocia@gmail.com</p>
     </div>
 
-    <div class="kit-contents">
-      <div class="content-card">
-        <div class="icon">📋</div>
-        <h4>Checklist de Preparação Invisível</h4>
-        <p>4 blocos — Contexto Real, Leitura do Jogo, Posicionamento e Controle — para responder antes de qualquer conversa importante.</p>
-      </div>
-      <div class="content-card">
-        <div class="icon">📖</div>
-        <h4>Mini Ebook: 4 Erros Silenciosos</h4>
-        <p>Justificar antes de ser questionado. Confundir conversa com decisão. Preencher o silêncio do outro. Negociar para agradar.</p>
-      </div>
-      <div class="content-card">
-        <div class="icon">❓</div>
-        <h4>Roteiro de Perguntas</h4>
-        <p>5 blocos de perguntas que deslocam a decisão: entender o jogo real, mapear poder e tempo, deslocar a decisão, usar o silêncio, fechamento com clareza.</p>
-      </div>
+    <div class="privacy-section">
+      <h2>2. Que dados coletamos</h2>
+      <p>Coletamos apenas os dados necessários para cada finalidade específica:</p>
+      <ul>
+        <li><strong>E-mail:</strong> Para envio do Kit de Decisão, roteiros estratégicos do Prep com IA, e comunicações sobre negociação.</li>
+        <li><strong>Nome:</strong> Para personalização das comunicações (quando fornecido voluntariamente).</li>
+        <li><strong>Dados de negociação:</strong> Informações que você insere nos formulários da Arena, BATNA/ZOPA e Prep com IA, usadas exclusivamente para gerar os resultados solicitados.</li>
+        <li><strong>Dados de contato:</strong> Nome, e-mail, tipo de interesse e mensagem enviada pelo formulário de contato.</li>
+      </ul>
+      <p><strong>Não coletamos:</strong> CPF, endereço, dados bancários, ou qualquer informação sensível sem necessidade explícita.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>3. Como usamos seus dados</h2>
+      <p>Seus dados são utilizados estritamente para as finalidades abaixo:</p>
+      <ul>
+        <li>Entrega do material solicitado (Kit de Decisão, roteiro estratégico).</li>
+        <li>Comunicações sobre novos conteúdos, ferramentas e eventos de negociação.</li>
+        <li>Resposta a solicitações de contato, consultoria ou palestras.</li>
+        <li>Melhoria contínua das ferramentas e experiência do usuário.</li>
+      </ul>
+      <p><strong>Não vendemos, alugamos ou compartilhamos seus dados com terceiros para fins comerciais.</strong></p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>4. Base legal (LGPD)</h2>
+      <p>O tratamento de seus dados pessoais é realizado com base no <strong>consentimento</strong> (art. 7º, I da LGPD), manifestado de forma livre, informada e inequívoca ao marcar a caixa de concordância em nossos formulários.</p>
+      <p>Você pode revogar seu consentimento a qualquer momento, sem prejuízo de tratamentos realizados anteriormente.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>5. Com quem compartilhamos</h2>
+      <p>Seus dados podem ser processados pelos seguintes serviços terceirizados, estritamente para operação do site:</p>
+      <ul>
+        <li><strong>Formspree:</strong> Processamento de formulários de contato e captura de leads.</li>
+        <li><strong>Netlify:</strong> Hospedagem do site estático.</li>
+        <li><strong>Google Fonts:</strong> Carregamento de tipografias (não armazena dados pessoais).</li>
+      </ul>
+      <p>Todos os serviços acima operam com padrões de segurança compatíveis com a LGPD.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>6. Por quanto tempo guardamos</h2>
+      <p>Seus dados são mantidos pelo tempo necessário para cumprir as finalidades descritas nesta política, ou até que você solicite a exclusão. E-mails de newsletter são mantidos enquanto você não solicitar o descadastramento.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>7. Seus direitos (LGPD)</h2>
+      <p>Você tem os seguintes direitos em relação aos seus dados pessoais:</p>
+      <ul>
+        <li><strong>Acesso:</strong> Saber quais dados seus estão sendo tratados.</li>
+        <li><strong>Correção:</strong> Corrigir dados incompletos, inexatos ou desatualizados.</li>
+        <li><strong>Exclusão:</strong> Solicitar a eliminação dos seus dados.</li>
+        <li><strong>Revogação de consentimento:</strong> Retirar sua autorização a qualquer momento.</li>
+        <li><strong>Portabilidade:</strong> Receber seus dados em formato estruturado.</li>
+        <li><strong>Informação:</strong> Saber com quem seus dados foram compartilhados.</li>
+      </ul>
+      <p>Para exercer qualquer desses direitos, envie um e-mail para <strong>reginaldonegocia@gmail.com</strong> com o assunto "LGPD — Solicitação de [direito]".</p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>8. Segurança</h2>
+      <p>Adotamos medidas técnicas e organizacionais para proteger seus dados contra acesso não autorizado, alteração, divulgação ou destruição. O site utiliza conexão HTTPS e os formulários são processados por serviços com certificação de segurança.</p>
+      <p>No entanto, nenhum sistema é 100% seguro. Se você tiver motivos para acreditar que seus dados foram comprometidos, entre em contato imediatamente.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>9. Cookies</h2>
+      <p>Este site não utiliza cookies de rastreamento ou publicidade. Navegamos com o mínimo necessário para funcionamento técnico. Você pode desativar cookies no seu navegador sem perda de funcionalidade essencial.</p>
+    </div>
+
+    <div class="privacy-section">
+      <h2>10. Alterações nesta política</h2>
+      <p>Podemos atualizar esta Política de Privacidade periodicamente. A data da última revisão será sempre indicada no final desta página. Alterações significativas serão comunicadas por e-mail aos usuários cadastrados.</p>
+      <p class="update-date">Última atualização: 27 de julho de 2026</p>
     </div>
   </div>
 

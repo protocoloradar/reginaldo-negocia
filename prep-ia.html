@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kit de Decisão Gratuito — Como ler o jogo antes de entrar nele. Checklist, mini-ebook e roteiro de perguntas.">
-  <title>Kit de Decisão Gratuito | Reginaldo Negocia</title>
+  <meta name="description" content="Prep com IA — Descreva sua negociação e receba um roteiro estratégico personalizado.">
+  <title>Prep com IA | Reginaldo Negocia</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,216 +146,135 @@
       line-height: 1.7;
     }
 
-    .kit-container {
-      max-width: 900px;
+    .prep-container {
+      max-width: 700px;
       margin: 0 auto 6rem;
       padding: 0 4%;
     }
 
-    .kit-hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-      margin-bottom: 4rem;
-    }
-
-    .kit-visual {
-      background: linear-gradient(135deg, var(--petroleo-light), var(--petroleo));
+    .prep-intro {
+      background: rgba(255,255,255,0.02);
       border: 1px solid var(--border);
       border-radius: 4px;
-      aspect-ratio: 3/4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      padding: 2rem 2.5rem;
+      margin-bottom: 2.5rem;
     }
 
-    .kit-visual::before {
-      content: '';
-      position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(201, 168, 76, 0.05), transparent 60%);
-    }
-
-    .kit-visual h3 {
+    .prep-intro h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      line-height: 1.1;
-      margin-bottom: 0.5rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .kit-visual .subtitle {
-      font-size: 0.9rem;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 0.75rem;
       color: var(--ouro);
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      position: relative;
-      z-index: 1;
     }
 
-    .kit-visual .line {
-      width: 60px;
-      height: 1px;
-      background: var(--ouro);
-      margin: 1.5rem auto;
-      position: relative;
-      z-index: 1;
+    .prep-intro p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
     }
 
-    .kit-visual .author {
+    .form-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 2rem;
+    }
+
+    .form-group label {
+      display: block;
       font-size: 0.8rem;
-      color: var(--text-muted);
-      position: relative;
-      z-index: 1;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.6rem;
     }
 
-    .kit-form-section h2 {
+    .form-group label .required {
+      color: var(--ouro);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      padding: 1rem 1.2rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-primary);
+      outline: none;
+      transition: var(--transition);
+      resize: vertical;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--ouro);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .form-group textarea {
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    .form-group .hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      line-height: 1.5;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 4rem 2rem;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .success-message.active {
+      display: block;
+    }
+
+    .success-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .success-message h2 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.8rem;
       font-weight: 400;
       margin-bottom: 1rem;
     }
 
-    .kit-form-section p {
+    .success-message p {
       font-size: 0.95rem;
       color: var(--text-secondary);
       line-height: 1.7;
-      margin-bottom: 2rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
     }
 
-    .kit-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .kit-form input[type="email"] {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.9rem;
-      padding: 1rem 1.5rem;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      color: var(--text-primary);
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .kit-form input[type="email"]::placeholder { color: var(--text-muted); }
-    .kit-form input[type="email"]:focus {
-      border-color: var(--ouro);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .checkbox-group {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 0.5rem 0;
-    }
-
-    .checkbox-group input[type="checkbox"] {
-      width: 16px; height: 16px;
-      margin-top: 2px;
-      accent-color: var(--ouro);
-      cursor: pointer;
-    }
-
-    .checkbox-group label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-      cursor: pointer;
-    }
-
-    .checkbox-group label a { color: var(--ouro); text-decoration: underline; }
-
-    .kit-form button { width: 100%; margin-top: 0.5rem; }
-
-    .kit-note {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      margin-top: 1rem;
-    }
-
-    .kit-contents {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .content-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 2rem;
-      text-align: center;
-    }
-
-    .content-card .icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    .content-card h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .content-card p {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    .btn {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      padding: 1rem 2.5rem;
-      text-decoration: none;
-      border-radius: 2px;
-      transition: var(--transition);
-      cursor: pointer;
-      border: none;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: var(--ouro);
-      color: var(--petroleo-dark);
-    }
-
-    .btn-primary:hover {
-      background: var(--ouro-light);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 40px rgba(201, 168, 76, 0.2);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--ouro);
-      border: 1px solid var(--ouro);
-    }
-
-    .btn-outline:hover {
-      background: var(--ouro);
-      color: var(--petroleo-dark);
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     footer {
@@ -425,15 +344,14 @@
     .footer-social a:hover { color: var(--ouro); }
 
     @media (max-width: 1024px) {
-      .kit-hero { grid-template-columns: 1fr; }
-      .kit-visual { max-width: 300px; margin: 0 auto; }
-      .kit-contents { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .mobile-menu-btn { display: block; }
       .page-header { padding: 8rem 6% 3rem; }
+      .form-card { padding: 1.5rem; }
+      .prep-intro { padding: 1.5rem; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
       .footer-bottom { flex-direction: column; text-align: center; }
     }
@@ -456,60 +374,70 @@
   </nav>
 
   <div class="page-header">
-    <p class="page-eyebrow">📥 Material Exclusivo</p>
-    <h1 class="page-title">Kit de Decisão:<br><em>Como ler o jogo antes de entrar nele</em></h1>
-    <p class="page-desc">Presença, leitura e posicionamento na prática. Checklist + Mini Ebook + Roteiro de Perguntas. Gratuito.</p>
+    <p class="page-eyebrow">🧠 Prep com IA</p>
+    <h1 class="page-title">Descreva sua negociação.<br>Receba um <em>roteiro estratégico</em> personalizado.</h1>
+    <p class="page-desc">Abertura, concessões calculadas, perguntas-chave e fechamento — tudo pensado para o seu cenário específico.</p>
   </div>
 
-  <div class="kit-container">
-    <div class="kit-hero">
-      <div class="kit-visual">
-        <h3>COMO LER<br>O JOGO</h3>
-        <span class="subtitle">Antes de entrar nele</span>
-        <div class="line"></div>
-        <span class="author">by Reginaldo Negocia</span>
-      </div>
-      <div class="kit-form-section">
-        <h2>Baixe agora. É gratuito.</h2>
-        <p>O Kit de Decisão foi criado para quem precisa enxergar o jogo antes de sentar à mesa. Não são frases bonitas — são perguntas que mudam o rumo da conversa, checklists que organizam sua cabeça, e leituras sobre erros silenciosos que custam caro.</p>
-
-        <form class="kit-form" action="https://formspree.io/f/xbdwnjav" method="POST">
-          <input type="hidden" name="_subject" value="[Kit de Decisão] Nova solicitação">
-          <input type="hidden" name="origem" value="kit_page">
-
-          <input type="email" name="email" placeholder="Seu melhor e-mail" required>
-
-          <div class="checkbox-group">
-            <input type="checkbox" id="lgpd" name="lgpd_consent" required>
-            <label for="lgpd">
-              Concordo em receber o Kit de Decisão e comunicações sobre negociação. 
-              Li e aceito a <a href="/privacidade.html">Política de Privacidade</a>.
-            </label>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Quero receber o Kit</button>
-        </form>
-
-        <p class="kit-note">PDF enviado em até 5 minutos. Sem spam. Sem enrolação.</p>
-      </div>
+  <div class="prep-container">
+    <div class="prep-intro">
+      <h3>Como funciona</h3>
+      <p>Você descreve sua negociação em 4 campos. Nossa equipe analisa o cenário e envia um roteiro estratégico personalizado com: abertura recomendada, concessões calculadas, perguntas que deslocam o poder, e opções de fechamento. Resposta em até 24 horas úteis.</p>
     </div>
 
-    <div class="kit-contents">
-      <div class="content-card">
-        <div class="icon">📋</div>
-        <h4>Checklist de Preparação Invisível</h4>
-        <p>4 blocos — Contexto Real, Leitura do Jogo, Posicionamento e Controle — para responder antes de qualquer conversa importante.</p>
-      </div>
-      <div class="content-card">
-        <div class="icon">📖</div>
-        <h4>Mini Ebook: 4 Erros Silenciosos</h4>
-        <p>Justificar antes de ser questionado. Confundir conversa com decisão. Preencher o silêncio do outro. Negociar para agradar.</p>
-      </div>
-      <div class="content-card">
-        <div class="icon">❓</div>
-        <h4>Roteiro de Perguntas</h4>
-        <p>5 blocos de perguntas que deslocam a decisão: entender o jogo real, mapear poder e tempo, deslocar a decisão, usar o silêncio, fechamento com clareza.</p>
-      </div>
+    <div class="form-card" id="form-container">
+      <form id="prep-form" action="https://formspree.io/f/xbdwnjav" method="POST">
+        <input type="hidden" name="_subject" value="[Prep com IA] Nova solicitação de roteiro">
+        <input type="hidden" name="origem" value="prep_ia">
+
+        <div class="form-group">
+          <label for="negociacao">O que você está negociando? <span class="required">*</span></label>
+          <input type="text" id="negociacao" name="negociacao" placeholder="Ex: Contrato de fornecimento de R$500k, aumento salarial, compra de imóvel..." required>
+          <div class="hint">Seja específico sobre o objeto e o valor envolvido.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="posicao">Qual é sua posição / o que você quer? <span class="required">*</span></label>
+          <textarea id="posicao" name="posicao" placeholder="Descreva seu objetivo e limite. Ex: Quero fechar em R$150k, mas meu piso é R$120k. Preciso de 30 dias de prazo." required></textarea>
+          <div class="hint">Inclua seu alvo, piso e o que é inegociável para você.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="outro-lado">Quem é o outro lado? O que motiva ele? <span class="required">*</span></label>
+          <textarea id="outro-lado" name="outro_lado" placeholder="Perfil, interesses, pressões que ele sofre... Ex: Diretor de compras com meta de redução de 15% no orçamento. Pressionado pelo CFO." required></textarea>
+          <div class="hint">Quanto mais você souber sobre o outro lado, melhor o roteiro.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="contexto">Qual é o contexto / pressão de tempo? <span class="required">*</span></label>
+          <textarea id="contexto" name="contexto" placeholder="Ex: Reunião sexta, concorrente já foi contatado, preciso fechar até o fim do mês para bater meta..." required></textarea>
+          <div class="hint">Prazos, concorrência, pressões internas — tudo conta.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Seu e-mail <span class="required">*</span></label>
+          <input type="email" id="email" name="email" placeholder="Seu melhor e-mail" required>
+          <div class="hint">O roteiro será enviado para este e-mail.</div>
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+            <input type="checkbox" id="lgpd-prep" name="lgpd_consent" required style="width: 16px; height: 16px; margin-top: 2px; accent-color: var(--ouro); cursor: pointer;">
+            <label for="lgpd-prep" style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; cursor: pointer;">
+              Concordo em receber o roteiro estratégico e comunicações sobre negociação. Li e aceito a <a href="/privacidade.html" style="color: var(--ouro); text-decoration: underline;">Política de Privacidade</a>.
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary submit-btn">Gerar Roteiro Estratégico →</button>
+      </form>
+    </div>
+
+    <div class="success-message" id="success-message">
+      <div class="success-icon">✓</div>
+      <h2>Roteiro em preparação</h2>
+      <p>Recebemos sua solicitação. Nossa equipe está analisando seu cenário e você receberá o roteiro estratégico personalizado no e-mail informado em até 24 horas úteis.</p>
+      <a href="/" class="btn btn-outline">Voltar para o início</a>
     </div>
   </div>
 
@@ -553,5 +481,21 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    const form = document.getElementById('prep-form');
+    const formContainer = document.getElementById('form-container');
+    const successMessage = document.getElementById('success-message');
+
+    form.addEventListener('submit', function(e) {
+      // Let Formspree handle the submission
+      // Show success after a brief delay to allow Formspree to process
+      setTimeout(() => {
+        formContainer.style.display = 'none';
+        successMessage.classList.add('active');
+        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
