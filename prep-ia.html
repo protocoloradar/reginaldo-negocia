@@ -2,6 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <script>
+    // Quem abrir o endereço antigo (protocoloradar.github.io/reginaldo-negocia) vai para o site oficial, na mesma página
+    if (location.hostname.endsWith('github.io')) {
+      location.replace('https://reginaldonegocia.com.br' + (location.pathname.replace(/^\/reginaldo-negocia/, '') || '/') + location.search + location.hash);
+    }
+  </script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Prep Estratégico — Descreva sua negociação e receba um roteiro estratégico personalizado.">
   <title>Prep Estratégico | Reginaldo Negocia</title>
