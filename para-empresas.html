@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Sobre Reginaldo Negocia — Dezenove anos sentado do lado da mesa que decide.">
-  <title>Sobre | Reginaldo Negocia</title>
+  <meta name="description" content="Palestras, Assessment e Advisor de negociação para empresas. Dezenove anos do lado da mesa que decide.">
+  <title>Para empresas | Reginaldo Negocia</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -345,6 +345,47 @@
     }
     .footer-social a:hover { color: var(--ouro); }
 
+    .emp-container { max-width: 1100px; margin: 0 auto 6rem; padding: 0 4%; }
+    .provas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 5rem; }
+    .prova { background: var(--petroleo); padding: 2rem 1.2rem; text-align: center; }
+    .prova strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 600; color: var(--ouro); line-height: 1.1; margin-bottom: .4rem; }
+    .prova span { font-size: .8rem; color: var(--text-secondary); line-height: 1.5; }
+    .ofertas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 5rem; }
+    .oferta { display: flex; flex-direction: column; padding: 2.5rem 2rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 4px; scroll-margin-top: 7rem; transition: var(--transition); }
+    .oferta:hover { border-color: var(--border-hover); }
+    .oferta .etapa { font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--ouro); margin-bottom: 1rem; }
+    .oferta h2 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 500; margin-bottom: .5rem; }
+    .oferta .para { font-size: .9rem; color: var(--text-primary); margin-bottom: 1.2rem; line-height: 1.6; }
+    .oferta > p { font-size: .9rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 1.5rem; }
+    .oferta ul { list-style: none; margin-bottom: 2rem; flex: 1; }
+    .oferta li { font-size: .85rem; color: var(--text-secondary); padding: .6rem 0 .6rem 1.4rem; border-top: 1px solid var(--border); position: relative; line-height: 1.5; }
+    .oferta li::before { content: '—'; position: absolute; left: 0; color: var(--ouro); }
+    .oferta .selo { align-self: flex-start; font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--petroleo-dark); background: var(--ouro); padding: .35rem .8rem; border-radius: 2px; margin-bottom: 1.2rem; }
+    .oferta .btn { text-align: center; }
+    .passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 4rem; }
+    .passo { padding-top: 1.5rem; border-top: 1px solid var(--ouro); }
+    .passo b { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--ouro); font-weight: 500; }
+    .passo h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 500; margin: .3rem 0 .5rem; }
+    .passo p { font-size: .85rem; color: var(--text-secondary); line-height: 1.6; }
+    .mesa { text-align: center; padding: 3.5rem 2.5rem 2.5rem; margin-bottom: 4rem; border: 1px solid var(--border-hover); border-radius: 4px; background: linear-gradient(180deg, rgba(201,168,76,0.07), rgba(201,168,76,0.01)); scroll-margin-top: 7rem; }
+    .mesa .etapa { font-size: .65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--ouro); margin-bottom: 1rem; }
+    .mesa h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 400; margin-bottom: 1rem; }
+    .mesa h2 em { font-style: italic; color: var(--ouro); }
+    .mesa-intro { max-width: 640px; margin: 0 auto 2.5rem; color: var(--text-secondary); line-height: 1.7; }
+    .mesa .passos { text-align: left; margin-bottom: 1.5rem; }
+    .mesa-nota { font-size: .8rem; color: var(--ouro); letter-spacing: 1px; }
+    .publico { display: flex; justify-content: center; gap: .5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .publico button { font-family: 'Inter', sans-serif; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; padding: .9rem 1.6rem; background: transparent; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 2px; cursor: pointer; transition: var(--transition); }
+    .publico button[aria-selected="true"] { color: var(--petroleo-dark); background: var(--ouro); border-color: var(--ouro); }
+    .ofertas[hidden] { display: none; }
+    .bloco-titulo { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 400; text-align: center; margin-bottom: 2.5rem; }
+    .bloco-titulo em { font-style: italic; color: var(--ouro); }
+    .cta-section .acoes { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    @media (max-width: 1024px) {
+      .ofertas, .passos { grid-template-columns: 1fr; max-width: 560px; margin-left: auto; margin-right: auto; }
+      .provas { grid-template-columns: 1fr 1fr; }
+    }
+
     @media (max-width: 1024px) {
       .pillars { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -412,57 +453,143 @@
   </nav>
 
   <div class="page-header">
-    <p class="page-eyebrow">Quem está por trás</p>
-    <h1 class="page-title">Reginaldo Lourenço.<br><em>Dezenove anos do lado da mesa que decide.</em></h1>
-    <p class="page-desc">O suficiente para entender que o preço quase nunca é o problema — e que a maioria das negociações é decidida antes da proposta ser apresentada.</p>
+    <p class="page-eyebrow">Para empresas</p>
+    <h1 class="page-title">Seu time vende para compradores experientes.<br><em>Treine com um.</em></h1>
+    <p class="page-desc">Passei 19 anos do lado de quem decide a compra. Hoje treino quem vende para esse lado, e também quem compra.</p>
   </div>
 
-  <div class="about-container">
-    <div class="about-section">
-      <h2>O que define o resultado de uma negociação raramente é o que se diz. É o que se <em>observa.</em></h2>
-      <p>Você lê quando entra numa sala e sente o clima. Quando alguém demora a responder e você percebe. Quando uma reunião muda de rumo sem ninguém anunciar. Quando o silêncio do outro diz mais que a fala.</p>
-      <p>O problema é que a maioria das pessoas lê sem perceber — e perde poder exatamente por isso.</p>
-      <blockquote>"Toda conversa importante é uma decisão em movimento. E é aí que quase todo mundo erra. Não por falta de técnica. Mas por ansiedade. Por pressa. Por confundir conversa com decisão."</blockquote>
+  <div class="emp-container">
+    <div class="provas">
+      <div class="prova"><strong>19 anos</strong><span>do lado da mesa que decide</span></div>
+      <div class="prova"><strong>R$ 2 bi</strong><span>negociados ao longo da carreira</span></div>
+      <div class="prova"><strong>100 lojas</strong><span>abertas em 12 meses numa expansão nacional</span></div>
+      <div class="prova"><strong>R$ 36 mi</strong><span>de economia gerada em compras</span></div>
     </div>
 
-    <div class="about-section">
-      <h2>Quem é <em>Reginaldo</em></h2>
-      <p>Dezenove anos sentado do lado da mesa que decide. Em compras corporativas, em expansões nacionais, em mesas onde cada decisão movia milhões.</p>
-      <p>O suficiente para entender que o preço quase nunca é o problema — e que a maioria das negociações é decidida antes da proposta ser apresentada.</p>
-      <p>Reginaldo Negocia é sobre a leitura do jogo por trás da mesa — não a teoria, a dinâmica real. Sobre presença, leitura e posicionamento na prática. Para quem precisa decidir, vender, comprar e negociar com mais controle.</p>
+    <section class="mesa" id="mesa-real">
+      <p class="etapa">O diferencial</p>
+      <h2>Mesa Real: seu vendedor negocia <em>comigo.</em></h2>
+      <p class="mesa-intro">Treinamento de vendas costuma ser dado por outro vendedor. Na Mesa Real, quem está do outro lado é um comprador com 19 anos de mesa.</p>
+      <div class="passos">
+        <div class="passo"><b>01</b><h4>Uma proposta de verdade</h4><p>O vendedor traz uma negociação real, em andamento ou recente.</p></div>
+        <div class="passo"><b>02</b><h4>Eu sou o comprador</h4><p>Objeções, silêncio, "tá caro", "manda por e-mail". Do jeito que acontece na mesa.</p></div>
+        <div class="passo"><b>03</b><h4>O que o comprador enxergou</h4><p>Retorno na hora: onde ele perdeu poder e o que eu diria diferente.</p></div>
+      </div>
+      <p class="mesa-nota">Faz parte do Assessment e do Advisor para times de vendas.</p>
+    </section>
+
+    <div class="publico" role="tablist" aria-label="Escolha o time">
+      <button role="tab" aria-selected="true" data-alvo="vendas">Para times de vendas</button>
+      <button role="tab" aria-selected="false" data-alvo="compras">Para times de compras</button>
     </div>
 
-    <div class="pillars">
-      <div class="pillar">
-        <div class="icon">👁️</div>
-        <h4>Leitura</h4>
-        <p>Toda mesa tem uma hierarquia que ninguém anuncia. Aprender a enxergá-la é o primeiro deslocamento de poder.</p>
+    <div class="ofertas" data-publico="vendas">
+      <div class="oferta" id="palestras">
+        <p class="etapa">Para eventos e equipes</p>
+        <h2>Palestras</h2>
+        <p class="para">Para convenções de vendas, kickoffs e encontros comerciais.</p>
+        <p>O lado que o vendedor nunca vê: como o comprador decide antes do preço, o que ele percebe na primeira reunião e por que a melhor proposta nem sempre ganha.</p>
+        <ul>
+          <li>Tema ajustado ao público do evento</li>
+          <li>Presencial ou online</li>
+          <li>Duração combinada com a organização</li>
+        </ul>
+        <a href="/contato.html?tipo=palestra&amp;publico=vendas" class="btn btn-outline">Quero uma palestra</a>
       </div>
-      <div class="pillar">
-        <div class="icon">🎭</div>
-        <h4>Postura</h4>
-        <p>Presença é a única moeda que cargo não compra. Define quem é ouvido antes mesmo da primeira palavra.</p>
+      <div class="oferta" id="assessment">
+        <p class="etapa">Diagnóstico</p>
+        <h2>Assessment</h2>
+        <p class="para">Para times comerciais que vendem B2B para compradores profissionais.</p>
+        <p>Eu leio as propostas e a abordagem do seu time com o olhar de quem as recebia, e cada vendedor passa pela Mesa Real.</p>
+        <ul>
+          <li>Análise das propostas reais com o olhar do comprador</li>
+          <li>Mesa Real com cada vendedor, com retorno individual</li>
+          <li>Plano de ação por escrito para o time</li>
+        </ul>
+        <a href="/contato.html?tipo=assessment&amp;publico=vendas" class="btn btn-outline">Quero um Assessment</a>
       </div>
-      <div class="pillar">
-        <div class="icon">🎯</div>
-        <h4>Decisão</h4>
-        <p>A planilha é o palco. O comportamento é o jogo. Quem domina o segundo decide o primeiro.</p>
+      <div class="oferta" id="advisor">
+        <p class="etapa">Acompanhamento mensal</p>
+        <h2>Advisor</h2>
+        <span class="selo">Mês a mês, sem fidelidade</span>
+        <p class="para">Para lideranças comerciais com vendas grandes em andamento.</p>
+        <p>Antes de cada venda importante, a gente prepara juntos pelo lado do comprador: o que ele vai perguntar, onde vai apertar e onde está o seu poder.</p>
+        <ul>
+          <li>Preparação das grandes vendas do mês</li>
+          <li>Mesa Real antes das reuniões decisivas</li>
+          <li>Revisão do que funcionou e do que ajustar</li>
+        </ul>
+        <a href="/contato.html?tipo=advisor&amp;publico=vendas" class="btn btn-primary">Quero o Advisor</a>
+      </div>
+    </div>
+    <div class="ofertas" data-publico="compras" hidden>
+      <div class="oferta" id="palestras-compras">
+        <p class="etapa">Para eventos e equipes</p>
+        <h2>Palestras</h2>
+        <p class="para">Para times de compras, suprimentos e lideranças.</p>
+        <p>Como ler o vendedor, não ceder cedo e usar o poder que a sua posição já tem. Contado por quem passou 19 anos decidindo, com casos reais.</p>
+        <ul>
+          <li>Tema ajustado ao público do evento</li>
+          <li>Presencial ou online</li>
+          <li>Duração combinada com a organização</li>
+        </ul>
+        <a href="/contato.html?tipo=palestra&amp;publico=compras" class="btn btn-outline">Quero uma palestra</a>
+      </div>
+      <div class="oferta" id="assessment-compras">
+        <p class="etapa">Diagnóstico</p>
+        <h2>Assessment</h2>
+        <p class="para">Para empresas que querem saber onde estão deixando dinheiro na mesa.</p>
+        <p>Um olhar de fora sobre como a sua empresa negocia hoje: onde vocês cedem cedo demais, onde está o poder que ninguém usa e o que ajustar primeiro.</p>
+        <ul>
+          <li>Análise das negociações, propostas e contratos em andamento</li>
+          <li>Mapa de poder: alternativas, limites e alavancas de cada lado</li>
+          <li>Plano de ação por escrito, com prioridades</li>
+        </ul>
+        <a href="/contato.html?tipo=assessment&amp;publico=compras" class="btn btn-outline">Quero um Assessment</a>
+      </div>
+      <div class="oferta" id="advisor-compras">
+        <p class="etapa">Acompanhamento mensal</p>
+        <h2>Advisor</h2>
+        <span class="selo">Mês a mês, sem fidelidade</span>
+        <p class="para">Para lideranças com negociações importantes acontecendo o tempo todo.</p>
+        <p>Um conselheiro de negociação ao lado da sua liderança: preparação antes da mesa, leitura durante e revisão depois. Você fica enquanto fizer sentido.</p>
+        <ul>
+          <li>Preparação das negociações críticas do mês</li>
+          <li>Apoio nas decisões que estão em andamento</li>
+          <li>Revisão do que funcionou e do que ajustar</li>
+        </ul>
+        <a href="/contato.html?tipo=advisor&amp;publico=compras" class="btn btn-primary">Quero o Advisor</a>
       </div>
     </div>
 
-    <div class="about-section">
-      <h2>O que <em>observamos</em></h2>
-      <p>Este material não foi criado para te ensinar truques. Ele existe para te ajudar a enxergar o jogo antes de entrar nele.</p>
-      <p>Aqui você não vai encontrar frases bonitas. Vai encontrar perguntas que mudam o rumo da conversa. Checklists que organizam sua cabeça. E leituras simples sobre erros silenciosos que custam caro — na vida profissional e pessoal.</p>
-      <p>Se você espera conteúdo motivacional, este não é para você. Se você quer parar de errar sem perceber, siga em frente.</p>
+    <h2 class="bloco-titulo">Como <em>começa</em></h2>
+    <div class="passos">
+      <div class="passo"><b>01</b><h4>Você me conta o cenário</h4><p>Pelo formulário ou pelo WhatsApp: o que o time vende ou compra e o que está em jogo.</p></div>
+      <div class="passo"><b>02</b><h4>Conversa inicial</h4><p>Entendo o momento da empresa e qual formato faz sentido. Às vezes é um só.</p></div>
+      <div class="passo"><b>03</b><h4>Proposta sob medida</h4><p>Escopo, prazo e investimento definidos para o seu caso.</p></div>
     </div>
 
     <div class="cta-section">
-      <h3>Quer levar essa leitura para sua empresa?</h3>
-      <p>Palestras, Assessment e Advisor para times de vendas e de compras.</p>
-      <a href="/para-empresas.html" class="btn btn-primary">Ver os formatos</a>
+      <h3>Qual mesa o seu time precisa ganhar?</h3>
+      <p>Investimento sob consulta, de acordo com o formato e o tamanho do time.</p>
+      <div class="acoes">
+        <a href="/contato.html" class="btn btn-primary">Enviar mensagem</a>
+        <a href="https://wa.me/5511947909315" target="_blank" rel="noopener" class="btn btn-outline">Falar no WhatsApp</a>
+      </div>
     </div>
   </div>
+
+  <script>
+    (function () {
+      var bts = document.querySelectorAll('.publico button'), grupos = document.querySelectorAll('.ofertas[data-publico]');
+      function mostra(alvo) {
+        bts.forEach(function (b) { b.setAttribute('aria-selected', b.dataset.alvo === alvo); });
+        grupos.forEach(function (g) { g.hidden = g.dataset.publico !== alvo; });
+      }
+      bts.forEach(function (b) { b.addEventListener('click', function () { mostra(b.dataset.alvo); }); });
+      if (/compras/.test(location.hash)) mostra('compras');
+    })();
+  </script>
 
   <footer>
     <div class="footer-grid">

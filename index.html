@@ -82,7 +82,7 @@
 
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 2rem;
       list-style: none;
       align-items: center;
     }
@@ -725,6 +725,42 @@
       .footer-bottom { flex-direction: column; text-align: center; }
     }
   </style>
+  <style id="rn-ajustes">
+    .nav-links a, nav .logo { white-space: nowrap; }
+    @media (max-width: 1240px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      .nav-links.open { display: flex; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: flex-start; gap: 1.4rem; padding: 2rem 6%; background: var(--petroleo-dark, #06121C); border-bottom: 1px solid var(--border); }
+    }
+    .form-status { margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+    .form-status a { color: var(--ouro); }
+  </style>
+  <script>
+    // Envia formulários do Formspree sem sair da página
+    window.rnEnviar = function (form, ok, falha) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var b = form.querySelector('[type=submit]'), t = b ? b.textContent : '';
+        if (b) { b.disabled = true; b.textContent = 'Enviando...'; }
+        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+          .then(function (r) { if (!r.ok) throw r; ok(); })
+          .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
+      });
+    };
+    window.rnBaixarKit = function () {
+      var a = document.createElement('a');
+      a.href = '/kit-v2.pdf'; a.download = 'Kit_de_Decisao_Reginaldo_Negocia.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+    // Menu do celular
+    document.addEventListener('DOMContentLoaded', function () {
+      var b = document.querySelector('.mobile-menu-btn'), l = document.querySelector('.nav-links');
+      if (!b || !l) return;
+      b.setAttribute('aria-label', 'Menu');
+      b.addEventListener('click', function () { var o = l.classList.toggle('open'); b.textContent = o ? '✕' : '☰'; });
+      l.addEventListener('click', function (e) { if (e.target.tagName === 'A') { l.classList.remove('open'); b.textContent = '☰'; } });
+    });
+  </script>
 </head>
 <body>
 
@@ -734,8 +770,9 @@
       <li><a href="/">Início</a></li>
       <li><a href="/arena.html">Arena</a></li>
       <li><a href="/batna-zopa.html">BATNA/ZOPA</a></li>
-      <li><a href="/prep-ia.html">Prep com IA</a></li>
+      <li><a href="/prep-ia.html">Prep Estratégico</a></li>
       <li><a href="/kit.html">Kit Gratuito</a></li>
+      <li><a href="/para-empresas.html">Para empresas</a></li>
       <li><a href="/sobre.html">Sobre</a></li>
       <li><a href="/contato.html" class="highlight">Contato</a></li>
     </ul>
@@ -779,7 +816,7 @@
       <a href="/arena.html" class="tool-card reveal">
         <span class="tool-icon">⚔️</span>
         <h3>Arena do Negociador</h3>
-        <p>20 cenários reais. Teste sua tomada de decisão sob pressão e descubra seu nível real como negociador.</p>
+        <p>10 cenários reais. Teste sua tomada de decisão sob pressão e descubra seu nível real como negociador.</p>
         <span class="tool-tag">Quiz · Ranking</span>
         <span class="tool-arrow">→</span>
       </a>
@@ -794,9 +831,9 @@
 
       <a href="/prep-ia.html" class="tool-card reveal">
         <span class="tool-icon">🧠</span>
-        <h3>Prep com IA</h3>
+        <h3>Prep Estratégico</h3>
         <p>Descreva sua negociação e receba um roteiro estratégico personalizado com abertura, concessões e fechamento.</p>
-        <span class="tool-tag">Inteligência Artificial</span>
+        <span class="tool-tag">Roteiro personalizado</span>
         <span class="tool-arrow">→</span>
       </a>
     </div>
@@ -807,7 +844,7 @@
       <div class="about-text">
         <p class="section-eyebrow">Quem está por trás</p>
         <h2>
-          Dezoito anos sentado do lado da mesa que decide. <em>O suficiente para entender que o preço quase nunca é o problema.</em>
+          Dezenove anos sentado do lado da mesa que decide. <em>O suficiente para entender que o preço quase nunca é o problema.</em>
         </h2>
         <p>
           Em compras corporativas, em expansões nacionais, em mesas onde cada decisão movia milhões. 
@@ -824,6 +861,42 @@
     </div>
   </section>
 
+  <section class="tools" id="empresas">
+    <div class="section-header reveal">
+      <p class="section-eyebrow">Para empresas</p>
+      <h2 class="section-title">Seu time vende para compradores experientes.<br><em>Treine com um.</em></h2>
+      <p class="section-desc">
+        Palestras, Assessment e Advisor para times de vendas e de compras, com quem passou 19 anos decidindo a compra.
+      </p>
+    </div>
+
+    <div class="tools-grid">
+      <a href="/para-empresas.html#palestras" class="tool-card reveal">
+        <span class="tool-icon">🎤</span>
+        <h3>Palestras</h3>
+        <p>O lado que o vendedor nunca vê: como o comprador decide antes do preço. Para eventos e equipes.</p>
+        <span class="tool-tag">Eventos · Equipes</span>
+        <span class="tool-arrow">→</span>
+      </a>
+
+      <a href="/para-empresas.html#assessment" class="tool-card reveal">
+        <span class="tool-icon">🔍</span>
+        <h3>Assessment</h3>
+        <p>Diagnóstico com a Mesa Real: seu vendedor negocia comigo no papel de comprador.</p>
+        <span class="tool-tag">Diagnóstico</span>
+        <span class="tool-arrow">→</span>
+      </a>
+
+      <a href="/para-empresas.html#advisor" class="tool-card reveal">
+        <span class="tool-icon">♟️</span>
+        <h3>Advisor</h3>
+        <p>As grandes negociações do mês preparadas pelo lado de quem decide. Mês a mês, sem fidelidade.</p>
+        <span class="tool-tag">Acompanhamento mensal</span>
+        <span class="tool-arrow">→</span>
+      </a>
+    </div>
+  </section>
+
   <section class="kit-section">
     <div class="kit-container reveal">
       <span class="kit-badge">Material Exclusivo</span>
@@ -835,7 +908,7 @@
         e roteiro de perguntas que deslocam a decisão. Gratuito.
       </p>
 
-      <form class="kit-form" action="https://formspree.io/f/xbdwnjav" method="POST">
+      <form class="kit-form" id="home-kit-form" action="https://formspree.io/f/xbdwnjav" method="POST">
         <input type="hidden" name="_subject" value="[Kit de Decisão] Nova solicitação">
         <input type="hidden" name="origem" value="home_kit_section">
 
@@ -852,7 +925,7 @@
         <button type="submit" class="btn btn-primary">Quero receber o Kit</button>
       </form>
 
-      <p class="kit-note">PDF enviado em até 5 minutos. Sem spam. Sem enrolação.</p>
+      <p class="kit-note" id="home-kit-note">Download na hora. Sem spam. Sem enrolação.</p>
     </div>
   </section>
 
@@ -870,13 +943,14 @@
         <ul>
           <li><a href="/arena.html">Arena do Negociador</a></li>
           <li><a href="/batna-zopa.html">Calculadora BATNA/ZOPA</a></li>
-          <li><a href="/prep-ia.html">Prep com IA</a></li>
+          <li><a href="/prep-ia.html">Prep Estratégico</a></li>
           <li><a href="/kit.html">Kit de Decisão</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Institucional</h4>
         <ul>
+          <li><a href="/para-empresas.html">Para empresas</a></li>
           <li><a href="/sobre.html">Sobre</a></li>
           <li><a href="/contato.html">Contato</a></li>
           <li><a href="/privacidade.html">Privacidade</a></li>
@@ -886,8 +960,9 @@
         <h4>Conecte-se</h4>
         <ul>
           <li><a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/reginaldodelboux" target="_blank" rel="noopener">LinkedIn</a></li>
           <li><a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a></li>
-          <li><a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="https://wa.me/5511947909315" target="_blank" rel="noopener">WhatsApp</a></li>
         </ul>
       </div>
     </div>
@@ -895,6 +970,7 @@
       <p>© 2026 Reginaldo Negocia. Todos os direitos reservados.</p>
       <div class="footer-social">
         <a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/reginaldodelboux" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>
@@ -999,6 +1075,21 @@
         }
       });
     });
+  </script>
+  <script>
+    (function () {
+      var f = document.getElementById('home-kit-form');
+      if (!f) return;
+      function entrega() {
+        f.innerHTML = '<p style="color:var(--ouro);font-size:1.05rem;margin-bottom:1rem">Pronto. O download começou.</p>' +
+          '<a href="/kit-v2.pdf" download class="btn btn-primary">Baixar o Kit de novo</a>' +
+          '<p style="margin-top:2rem;color:var(--text-secondary)">O Kit organiza a sua cabeça. O Assessment organiza a do seu time inteiro. ' +
+          '<a href="/para-empresas.html" style="color:var(--ouro)">Ver formatos para empresas</a></p>';
+        document.getElementById('home-kit-note').style.display = 'none';
+        rnBaixarKit();
+      }
+      rnEnviar(f, entrega, entrega);
+    })();
   </script>
 </body>
 </html>

@@ -73,7 +73,7 @@
 
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 2rem;
       list-style: none;
       align-items: center;
     }
@@ -305,6 +305,42 @@
       .footer-bottom { flex-direction: column; text-align: center; }
     }
   </style>
+  <style id="rn-ajustes">
+    .nav-links a, nav .logo { white-space: nowrap; }
+    @media (max-width: 1240px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      .nav-links.open { display: flex; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: flex-start; gap: 1.4rem; padding: 2rem 6%; background: var(--petroleo-dark, #06121C); border-bottom: 1px solid var(--border); }
+    }
+    .form-status { margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+    .form-status a { color: var(--ouro); }
+  </style>
+  <script>
+    // Envia formulários do Formspree sem sair da página
+    window.rnEnviar = function (form, ok, falha) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var b = form.querySelector('[type=submit]'), t = b ? b.textContent : '';
+        if (b) { b.disabled = true; b.textContent = 'Enviando...'; }
+        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+          .then(function (r) { if (!r.ok) throw r; ok(); })
+          .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
+      });
+    };
+    window.rnBaixarKit = function () {
+      var a = document.createElement('a');
+      a.href = '/kit-v2.pdf'; a.download = 'Kit_de_Decisao_Reginaldo_Negocia.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+    // Menu do celular
+    document.addEventListener('DOMContentLoaded', function () {
+      var b = document.querySelector('.mobile-menu-btn'), l = document.querySelector('.nav-links');
+      if (!b || !l) return;
+      b.setAttribute('aria-label', 'Menu');
+      b.addEventListener('click', function () { var o = l.classList.toggle('open'); b.textContent = o ? '✕' : '☰'; });
+      l.addEventListener('click', function (e) { if (e.target.tagName === 'A') { l.classList.remove('open'); b.textContent = '☰'; } });
+    });
+  </script>
 </head>
 <body>
 
@@ -314,8 +350,9 @@
       <li><a href="/">Início</a></li>
       <li><a href="/arena.html">Arena</a></li>
       <li><a href="/batna-zopa.html">BATNA/ZOPA</a></li>
-      <li><a href="/prep-ia.html">Prep com IA</a></li>
+      <li><a href="/prep-ia.html">Prep Estratégico</a></li>
       <li><a href="/kit.html">Kit Gratuito</a></li>
+      <li><a href="/para-empresas.html">Para empresas</a></li>
       <li><a href="/sobre.html">Sobre</a></li>
       <li><a href="/contato.html" class="highlight">Contato</a></li>
     </ul>
@@ -340,9 +377,9 @@
       <h2>2. Que dados coletamos</h2>
       <p>Coletamos apenas os dados necessários para cada finalidade específica:</p>
       <ul>
-        <li><strong>E-mail:</strong> Para envio do Kit de Decisão, roteiros estratégicos do Prep com IA, e comunicações sobre negociação.</li>
+        <li><strong>E-mail:</strong> Para envio do Kit de Decisão, roteiros estratégicos do Prep Estratégico, e comunicações sobre negociação.</li>
         <li><strong>Nome:</strong> Para personalização das comunicações (quando fornecido voluntariamente).</li>
-        <li><strong>Dados de negociação:</strong> Informações que você insere nos formulários da Arena, BATNA/ZOPA e Prep com IA, usadas exclusivamente para gerar os resultados solicitados.</li>
+        <li><strong>Dados de negociação:</strong> Informações que você insere nos formulários da Arena, BATNA/ZOPA e Prep Estratégico, usadas exclusivamente para gerar os resultados solicitados.</li>
         <li><strong>Dados de contato:</strong> Nome, e-mail, tipo de interesse e mensagem enviada pelo formulário de contato.</li>
       </ul>
       <p><strong>Não coletamos:</strong> CPF, endereço, dados bancários, ou qualquer informação sensível sem necessidade explícita.</p>
@@ -425,13 +462,14 @@
         <ul>
           <li><a href="/arena.html">Arena do Negociador</a></li>
           <li><a href="/batna-zopa.html">Calculadora BATNA/ZOPA</a></li>
-          <li><a href="/prep-ia.html">Prep com IA</a></li>
+          <li><a href="/prep-ia.html">Prep Estratégico</a></li>
           <li><a href="/kit.html">Kit de Decisão</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Institucional</h4>
         <ul>
+          <li><a href="/para-empresas.html">Para empresas</a></li>
           <li><a href="/sobre.html">Sobre</a></li>
           <li><a href="/contato.html">Contato</a></li>
           <li><a href="/privacidade.html">Privacidade</a></li>
@@ -441,8 +479,9 @@
         <h4>Conecte-se</h4>
         <ul>
           <li><a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/reginaldodelboux" target="_blank" rel="noopener">LinkedIn</a></li>
           <li><a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a></li>
-          <li><a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="https://wa.me/5511947909315" target="_blank" rel="noopener">WhatsApp</a></li>
         </ul>
       </div>
     </div>
@@ -450,6 +489,7 @@
       <p>© 2026 Reginaldo Negocia. Todos os direitos reservados.</p>
       <div class="footer-social">
         <a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/reginaldodelboux" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>

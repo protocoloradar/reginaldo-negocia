@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Arena do Negociador — 20 cenários reais. Teste sua tomada de decisão sob pressão.">
+  <meta name="description" content="Arena do Negociador — 10 cenários reais. Teste sua tomada de decisão sob pressão.">
   <title>Arena do Negociador | Reginaldo Negocia</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,7 +73,7 @@
 
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 2rem;
       list-style: none;
       align-items: center;
     }
@@ -480,7 +480,46 @@
       .footer-bottom { flex-direction: column; text-align: center; }
       .result-actions { flex-direction: column; align-items: center; }
     }
+    .ponte { margin-top: 2.5rem; padding: 2rem; border: 1px solid var(--border-hover, rgba(201,168,76,.4)); border-radius: 4px; background: rgba(201,168,76,0.05); text-align: center; }
+    .ponte p { font-size: .95rem; color: var(--text-primary); line-height: 1.7; max-width: 560px; margin: 0 auto 1.4rem; }
+    .ponte .btn { display: inline-block; }
   </style>
+  <style id="rn-ajustes">
+    .nav-links a, nav .logo { white-space: nowrap; }
+    @media (max-width: 1240px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      .nav-links.open { display: flex; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: flex-start; gap: 1.4rem; padding: 2rem 6%; background: var(--petroleo-dark, #06121C); border-bottom: 1px solid var(--border); }
+    }
+    .form-status { margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+    .form-status a { color: var(--ouro); }
+  </style>
+  <script>
+    // Envia formulários do Formspree sem sair da página
+    window.rnEnviar = function (form, ok, falha) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var b = form.querySelector('[type=submit]'), t = b ? b.textContent : '';
+        if (b) { b.disabled = true; b.textContent = 'Enviando...'; }
+        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+          .then(function (r) { if (!r.ok) throw r; ok(); })
+          .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
+      });
+    };
+    window.rnBaixarKit = function () {
+      var a = document.createElement('a');
+      a.href = '/kit-v2.pdf'; a.download = 'Kit_de_Decisao_Reginaldo_Negocia.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+    // Menu do celular
+    document.addEventListener('DOMContentLoaded', function () {
+      var b = document.querySelector('.mobile-menu-btn'), l = document.querySelector('.nav-links');
+      if (!b || !l) return;
+      b.setAttribute('aria-label', 'Menu');
+      b.addEventListener('click', function () { var o = l.classList.toggle('open'); b.textContent = o ? '✕' : '☰'; });
+      l.addEventListener('click', function (e) { if (e.target.tagName === 'A') { l.classList.remove('open'); b.textContent = '☰'; } });
+    });
+  </script>
 </head>
 <body>
 
@@ -490,8 +529,9 @@
       <li><a href="/">Início</a></li>
       <li><a href="/arena.html">Arena</a></li>
       <li><a href="/batna-zopa.html">BATNA/ZOPA</a></li>
-      <li><a href="/prep-ia.html">Prep com IA</a></li>
+      <li><a href="/prep-ia.html">Prep Estratégico</a></li>
       <li><a href="/kit.html">Kit Gratuito</a></li>
+      <li><a href="/para-empresas.html">Para empresas</a></li>
       <li><a href="/sobre.html">Sobre</a></li>
       <li><a href="/contato.html" class="highlight">Contato</a></li>
     </ul>
@@ -500,7 +540,7 @@
 
   <div class="page-header">
     <p class="page-eyebrow">⚔️ Arena do Negociador</p>
-    <h1 class="page-title">20 cenários reais.<br>Teste sua <em>tomada de decisão</em> sob pressão.</h1>
+    <h1 class="page-title">10 cenários reais.<br>Teste sua <em>tomada de decisão</em> sob pressão.</h1>
     <p class="page-desc">Cada escolha revela seu padrão. Não existe nota boa ou ruim — existe consciência do jogo.</p>
   </div>
 
@@ -519,13 +559,14 @@
         <ul>
           <li><a href="/arena.html">Arena do Negociador</a></li>
           <li><a href="/batna-zopa.html">Calculadora BATNA/ZOPA</a></li>
-          <li><a href="/prep-ia.html">Prep com IA</a></li>
+          <li><a href="/prep-ia.html">Prep Estratégico</a></li>
           <li><a href="/kit.html">Kit de Decisão</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Institucional</h4>
         <ul>
+          <li><a href="/para-empresas.html">Para empresas</a></li>
           <li><a href="/sobre.html">Sobre</a></li>
           <li><a href="/contato.html">Contato</a></li>
           <li><a href="/privacidade.html">Privacidade</a></li>
@@ -535,8 +576,9 @@
         <h4>Conecte-se</h4>
         <ul>
           <li><a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/reginaldodelboux" target="_blank" rel="noopener">LinkedIn</a></li>
           <li><a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a></li>
-          <li><a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="https://wa.me/5511947909315" target="_blank" rel="noopener">WhatsApp</a></li>
         </ul>
       </div>
     </div>
@@ -544,6 +586,7 @@
       <p>© 2026 Reginaldo Negocia. Todos os direitos reservados.</p>
       <div class="footer-social">
         <a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/reginaldodelboux" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>
@@ -552,7 +595,7 @@
   <script>
     const questions = [
       {
-        scenario: "Fogo",
+        scenario: "Autoridade limitada",
         text: "O outro lado diz: 'Não tenho autonomia para isso, preciso consultar meu gestor.'",
         context: "Você está em uma rodada decisiva de negociação com prazo curto.",
         options: [
@@ -565,7 +608,7 @@
         explanation: "Quem pede para 'consultar o gestor' geralmente testa sua pressa ou busca tempo para reagrupar. Pedir um prazo de retorno mantém você no controle do ritmo, sem ceder posição."
       },
       {
-        scenario: "Fogo",
+        scenario: "Comparação com o concorrente",
         text: "O cliente diz: 'Seu concorrente cobra 30% menos. Preciso que vocês igualem.'",
         context: "Você está no fechamento de um contrato de fornecimento de 12 meses.",
         options: [
@@ -578,7 +621,7 @@
         explanation: "Comparar preços sem comparar escopo é armadilha comum. Quem pergunta primeiro desarma a pressão e descobre se o 'menor' é realmente equivalente."
       },
       {
-        scenario: "Fogo",
+        scenario: "O silêncio",
         text: "Na mesa, o outro lado fica em silêncio por 12 segundos depois da sua proposta.",
         context: "Você acabou de apresentar sua contraproposta em uma negociação salarial.",
         options: [
@@ -591,7 +634,7 @@
         explanation: "Silêncio é moeda de troca. Quem fala primeiro no silêncio do outro geralmente paga a conta. Aguardar é postura."
       },
       {
-        scenario: "Fogo",
+        scenario: "Preço final",
         text: "O fornecedor diz: 'Esse é meu preço final. Não tenho como abrir.'",
         context: "Você precisa fechar essa compra esta semana para não parar a operação.",
         options: [
@@ -604,7 +647,7 @@
         explanation: "Quando o preço é inflexível, o jogo muda para o que está incluso. Prazo, pagamento, entrega, garantia — tudo é negociável, mesmo o valor não sendo."
       },
       {
-        scenario: "Fogo",
+        scenario: "Quem decide",
         text: "Em uma reunião com 5 pessoas do outro lado, apenas 1 fala. Os outros observam.",
         context: "Você está apresentando uma proposta de consultoria de R$ 500 mil.",
         options: [
@@ -617,7 +660,7 @@
         explanation: "A hierarquia real de uma mesa raramente é anunciada. Quem os outros olham quando há pausa ou tensão é quem realmente decide."
       },
       {
-        scenario: "Fogo",
+        scenario: "Prazo de pagamento",
         text: "O comprador diz: 'Vou precisar de 90 dias de pagamento. É política da empresa.'",
         context: "Você trabalha com prazo de 30 dias e margem apertada.",
         options: [
@@ -630,7 +673,7 @@
         explanation: "'Política da empresa' é frequentemente testável. Se o prazo é inflexível, o preço pode ser ajustado para refletir o custo real da operação."
       },
       {
-        scenario: "Fogo",
+        scenario: "Prazo apertado",
         text: "Você recebe uma proposta por e-mail com prazo de resposta de 24 horas.",
         context: "É sexta-feira às 17h. O prazo vence sábado às 17h.",
         options: [
@@ -643,7 +686,7 @@
         explanation: "Prazo curto em final de semana é tática de pressão. Quem responde com pressa geralmente cede. Segunda-feira com contraproposta bem pensada é resposta de quem tem posição."
       },
       {
-        scenario: "Fogo",
+        scenario: "Concordância rápida",
         text: "O outro lado concorda com tudo rapidamente. Não faz objeções.",
         context: "Você está negociando um contrato de exclusividade de 2 anos.",
         options: [
@@ -656,7 +699,7 @@
         explanation: "Concordância rápida demais em contrato longo geralmente significa que o outro lado não leu, não entendeu, ou não pretende cumprir. Revisar é proteção."
       },
       {
-        scenario: "Fogo",
+        scenario: "Mudança de assunto",
         text: "Durante a negociação, o outro lado começa a falar da vida pessoal.",
         context: "Vocês estão discutindo os últimos 10% de diferença no preço.",
         options: [
@@ -669,7 +712,7 @@
         explanation: "Desvio para assunto pessoal em momento decisivo pode ser tática de distração ou de construção de rapport. Escutar e voltar ao ponto mantém o controle sem ser grosseiro."
       },
       {
-        scenario: "Fogo",
+        scenario: "A última coisinha",
         text: "O contrato está pronto para assinar. O outro lado pede 'só mais uma coisinha'.",
         context: "É a terceira 'coisinha' que ele pede nesta rodada.",
         options: [
@@ -840,6 +883,10 @@
             <button class="btn btn-primary" onclick="startQuiz()">Refazer Arena</button>
             <a href="/batna-zopa.html" class="btn btn-outline">Calculadora BATNA/ZOPA</a>
             <a href="/kit.html" class="btn btn-outline">Baixar Kit Gratuito</a>
+          </div>
+          <div class="ponte">
+            <p>Esses padrões custam caro quando se repetem num time inteiro. Na Mesa Real, eu sento do outro lado do seu vendedor e mostro onde o poder vazou.</p>
+            <a href="/para-empresas.html#mesa-real" class="btn btn-primary">Levar a Mesa Real para o meu time</a>
           </div>
         </div>
       `;

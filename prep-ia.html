@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Prep com IA — Descreva sua negociação e receba um roteiro estratégico personalizado.">
-  <title>Prep com IA | Reginaldo Negocia</title>
+  <meta name="description" content="Prep Estratégico — Descreva sua negociação e receba um roteiro estratégico personalizado.">
+  <title>Prep Estratégico | Reginaldo Negocia</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,7 +73,7 @@
 
     .nav-links {
       display: flex;
-      gap: 2.5rem;
+      gap: 2rem;
       list-style: none;
       align-items: center;
     }
@@ -356,6 +356,42 @@
       .footer-bottom { flex-direction: column; text-align: center; }
     }
   </style>
+  <style id="rn-ajustes">
+    .nav-links a, nav .logo { white-space: nowrap; }
+    @media (max-width: 1240px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      .nav-links.open { display: flex; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: flex-start; gap: 1.4rem; padding: 2rem 6%; background: var(--petroleo-dark, #06121C); border-bottom: 1px solid var(--border); }
+    }
+    .form-status { margin-top: 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+    .form-status a { color: var(--ouro); }
+  </style>
+  <script>
+    // Envia formulários do Formspree sem sair da página
+    window.rnEnviar = function (form, ok, falha) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var b = form.querySelector('[type=submit]'), t = b ? b.textContent : '';
+        if (b) { b.disabled = true; b.textContent = 'Enviando...'; }
+        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+          .then(function (r) { if (!r.ok) throw r; ok(); })
+          .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
+      });
+    };
+    window.rnBaixarKit = function () {
+      var a = document.createElement('a');
+      a.href = '/kit-v2.pdf'; a.download = 'Kit_de_Decisao_Reginaldo_Negocia.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+    };
+    // Menu do celular
+    document.addEventListener('DOMContentLoaded', function () {
+      var b = document.querySelector('.mobile-menu-btn'), l = document.querySelector('.nav-links');
+      if (!b || !l) return;
+      b.setAttribute('aria-label', 'Menu');
+      b.addEventListener('click', function () { var o = l.classList.toggle('open'); b.textContent = o ? '✕' : '☰'; });
+      l.addEventListener('click', function (e) { if (e.target.tagName === 'A') { l.classList.remove('open'); b.textContent = '☰'; } });
+    });
+  </script>
 </head>
 <body>
 
@@ -365,8 +401,9 @@
       <li><a href="/">Início</a></li>
       <li><a href="/arena.html">Arena</a></li>
       <li><a href="/batna-zopa.html">BATNA/ZOPA</a></li>
-      <li><a href="/prep-ia.html">Prep com IA</a></li>
+      <li><a href="/prep-ia.html">Prep Estratégico</a></li>
       <li><a href="/kit.html">Kit Gratuito</a></li>
+      <li><a href="/para-empresas.html">Para empresas</a></li>
       <li><a href="/sobre.html">Sobre</a></li>
       <li><a href="/contato.html" class="highlight">Contato</a></li>
     </ul>
@@ -374,7 +411,7 @@
   </nav>
 
   <div class="page-header">
-    <p class="page-eyebrow">🧠 Prep com IA</p>
+    <p class="page-eyebrow">🧠 Prep Estratégico</p>
     <h1 class="page-title">Descreva sua negociação.<br>Receba um <em>roteiro estratégico</em> personalizado.</h1>
     <p class="page-desc">Abertura, concessões calculadas, perguntas-chave e fechamento — tudo pensado para o seu cenário específico.</p>
   </div>
@@ -382,12 +419,12 @@
   <div class="prep-container">
     <div class="prep-intro">
       <h3>Como funciona</h3>
-      <p>Você descreve sua negociação em 4 campos. Nossa equipe analisa o cenário e envia um roteiro estratégico personalizado com: abertura recomendada, concessões calculadas, perguntas que deslocam o poder, e opções de fechamento. Resposta em até 24 horas úteis.</p>
+      <p>Você descreve sua negociação em 4 campos. Eu analiso o cenário e envio um roteiro estratégico personalizado com: abertura recomendada, concessões calculadas, perguntas que deslocam o poder, e opções de fechamento. Resposta em até 24 horas úteis.</p>
     </div>
 
     <div class="form-card" id="form-container">
       <form id="prep-form" action="https://formspree.io/f/xbdwnjav" method="POST">
-        <input type="hidden" name="_subject" value="[Prep com IA] Nova solicitação de roteiro">
+        <input type="hidden" name="_subject" value="[Prep Estratégico] Nova solicitação de roteiro">
         <input type="hidden" name="origem" value="prep_ia">
 
         <div class="form-group">
@@ -436,7 +473,7 @@
     <div class="success-message" id="success-message">
       <div class="success-icon">✓</div>
       <h2>Roteiro em preparação</h2>
-      <p>Recebemos sua solicitação. Nossa equipe está analisando seu cenário e você receberá o roteiro estratégico personalizado no e-mail informado em até 24 horas úteis.</p>
+      <p>Recebemos sua solicitação. Estou analisando seu cenário e você receberá o roteiro estratégico personalizado no e-mail informado em até 24 horas úteis.</p>
       <a href="/" class="btn btn-outline">Voltar para o início</a>
     </div>
   </div>
@@ -452,13 +489,14 @@
         <ul>
           <li><a href="/arena.html">Arena do Negociador</a></li>
           <li><a href="/batna-zopa.html">Calculadora BATNA/ZOPA</a></li>
-          <li><a href="/prep-ia.html">Prep com IA</a></li>
+          <li><a href="/prep-ia.html">Prep Estratégico</a></li>
           <li><a href="/kit.html">Kit de Decisão</a></li>
         </ul>
       </div>
       <div class="footer-col">
         <h4>Institucional</h4>
         <ul>
+          <li><a href="/para-empresas.html">Para empresas</a></li>
           <li><a href="/sobre.html">Sobre</a></li>
           <li><a href="/contato.html">Contato</a></li>
           <li><a href="/privacidade.html">Privacidade</a></li>
@@ -468,8 +506,9 @@
         <h4>Conecte-se</h4>
         <ul>
           <li><a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.linkedin.com/in/reginaldodelboux" target="_blank" rel="noopener">LinkedIn</a></li>
           <li><a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a></li>
-          <li><a href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="https://wa.me/5511947909315" target="_blank" rel="noopener">WhatsApp</a></li>
         </ul>
       </div>
     </div>
@@ -477,6 +516,7 @@
       <p>© 2026 Reginaldo Negocia. Todos os direitos reservados.</p>
       <div class="footer-social">
         <a href="https://instagram.com/reginaldonegocia" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.linkedin.com/in/reginaldodelboux" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://youtube.com/@reginaldonegocia" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>
@@ -487,14 +527,13 @@
     const formContainer = document.getElementById('form-container');
     const successMessage = document.getElementById('success-message');
 
-    form.addEventListener('submit', function(e) {
-      // Let Formspree handle the submission
-      // Show success after a brief delay to allow Formspree to process
-      setTimeout(() => {
-        formContainer.style.display = 'none';
-        successMessage.classList.add('active');
-        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 1000);
+    rnEnviar(form, function () {
+      formContainer.style.display = 'none';
+      successMessage.classList.add('active');
+      successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, function () {
+      var st = form.querySelector('.form-status') || form.appendChild(Object.assign(document.createElement('p'), { className: 'form-status' }));
+      st.innerHTML = 'Não foi possível enviar agora. Me chama no <a href="https://wa.me/5511947909315" target="_blank" rel="noopener">WhatsApp</a>.';
     });
   </script>
 </body>
