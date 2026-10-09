@@ -697,7 +697,7 @@
             status.textContent = 'Analisando o seu cenário...'; status.classList.add('carregando');
             card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            var leitor = r.body.getReader(), dec = new TextDecoder(), buf = '', fim = false, emailOk = false, pend = false, erroIA = false;
+            var leitor = r.body.getReader(), dec = new TextDecoder(), buf = '', fim = false, emailOk = false, pend = false, erroIA = false, cortado = false;
             function agenda() { if (pend) return; pend = true; requestAnimationFrame(function () { pend = false; render(texto); }); }
             function evento(bloco) {
               var nome = '', data = '';
@@ -707,6 +707,7 @@
               if (nome === 'prep_fim') { fim = true; emailOk = !!ev.email; return; }
               if (ev.type === 'content_block_delta' && ev.delta && ev.delta.type === 'text_delta') { texto += ev.delta.text; status.textContent = 'Escrevendo o roteiro...'; agenda(); }
               if (ev.type === 'error') erroIA = true;
+              if (ev.type === 'message_delta' && ev.delta && ev.delta.stop_reason === 'max_tokens') cortado = true;
             }
             function ler() {
               return leitor.read().then(function (p) {
@@ -720,7 +721,7 @@
                 render(texto);
                 if (texto.trim().length < 20) { modoAntigo(); return; }
                 concluir(emailOk);
-                if (erroIA || !fim) nota.textContent = 'O roteiro pode ter ficado incompleto. Se precisar, gere de novo ou me chame no WhatsApp. ' + nota.textContent;
+                if (erroIA || !fim || cortado) nota.textContent = 'O roteiro pode ter ficado incompleto. Se precisar, gere de novo ou me chame no WhatsApp. ' + nota.textContent;
               });
             }
             return ler();
