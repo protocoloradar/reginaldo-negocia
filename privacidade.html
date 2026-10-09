@@ -324,12 +324,33 @@
   </style>
   <script>
     // Envia formulários do Formspree sem sair da página
+    // De onde a pessoa veio (primeira página da visita): utm_source ou site de origem
+    window.rnCanal = (function () {
+      try {
+        var c = sessionStorage.getItem('rn_canal');
+        if (c) return c;
+        var q = new URLSearchParams(location.search), u = q.get('utm_source');
+        if (u) c = u + (q.get('utm_medium') ? '/' + q.get('utm_medium') : '') + (q.get('utm_campaign') ? '/' + q.get('utm_campaign') : '');
+        else if (document.referrer && document.referrer.indexOf(location.hostname) < 0) c = new URL(document.referrer).hostname.replace(/^www\./, '');
+        else c = 'direto';
+        sessionStorage.setItem('rn_canal', c);
+        return c;
+      } catch (e) { return 'direto'; }
+    })();
     window.rnEnviar = function (form, ok, falha) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var b = form.querySelector('[type=submit]'), t = b ? b.textContent : '';
         if (b) { b.disabled = true; b.textContent = 'Enviando...'; }
-        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+        var fd = new FormData(form);
+        fd.set('canal', window.rnCanal);
+        if (fd.get('_subject')) fd.set('_subject', fd.get('_subject') + ' · via ' + window.rnCanal);
+        // Kit: também manda o link por e-mail (só funciona depois que a chave do Brevo estiver na Netlify)
+        if (form.classList.contains('kit-form') && fd.get('email')) {
+          fetch('/.netlify/functions/kit', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: fd.get('email'), canal: window.rnCanal }) }).catch(function () {});
+        }
+        fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } })
           .then(function (r) { if (!r.ok) throw r; ok(); })
           .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
       });
@@ -386,8 +407,9 @@
       <ul>
         <li><strong>E-mail:</strong> Para envio do Kit de Decisão, roteiros estratégicos do Prep Estratégico, e comunicações sobre negociação.</li>
         <li><strong>Nome:</strong> Para personalização das comunicações (quando fornecido voluntariamente).</li>
-        <li><strong>Dados de negociação:</strong> Informações que você insere nos formulários da Arena, BATNA/ZOPA e Prep Estratégico, usadas exclusivamente para gerar os resultados solicitados.</li>
+        <li><strong>Dados de negociação:</strong> Informações que você insere nos formulários da Arena, BATNA/ZOPA e Prep Estratégico, usadas exclusivamente para gerar os resultados solicitados. No Prep Estratégico, o cenário que você descreve é processado por inteligência artificial apenas para montar o seu roteiro. Recomendamos não informar nomes de empresas ou pessoas.</li>
         <li><strong>Dados de contato:</strong> Nome, e-mail, tipo de interesse e mensagem enviada pelo formulário de contato.</li>
+        <li><strong>Origem da visita:</strong> de qual site ou campanha você chegou até aqui (por exemplo, Instagram ou LinkedIn), para sabermos quais canais funcionam. Não identifica você sozinho.</li>
       </ul>
       <p><strong>Não coletamos:</strong> CPF, endereço, dados bancários, ou qualquer informação sensível sem necessidade explícita.</p>
     </div>
@@ -415,7 +437,9 @@
       <p>Seus dados podem ser processados pelos seguintes serviços terceirizados, estritamente para operação do site:</p>
       <ul>
         <li><strong>Formspree:</strong> Processamento de formulários de contato e captura de leads.</li>
-        <li><strong>Netlify:</strong> Hospedagem do site estático.</li>
+        <li><strong>Netlify:</strong> Hospedagem do site.</li>
+        <li><strong>Anthropic (Claude):</strong> Inteligência artificial que gera o roteiro do Prep Estratégico a partir do cenário descrito.</li>
+        <li><strong>Brevo:</strong> Envio por e-mail do Kit de Decisão e do roteiro do Prep Estratégico.</li>
         <li><strong>Google Fonts:</strong> Carregamento de tipografias (não armazena dados pessoais).</li>
       </ul>
       <p>Todos os serviços acima operam com padrões de segurança compatíveis com a LGPD.</p>

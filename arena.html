@@ -503,12 +503,33 @@
   </style>
   <script>
     // Envia formulários do Formspree sem sair da página
+    // De onde a pessoa veio (primeira página da visita): utm_source ou site de origem
+    window.rnCanal = (function () {
+      try {
+        var c = sessionStorage.getItem('rn_canal');
+        if (c) return c;
+        var q = new URLSearchParams(location.search), u = q.get('utm_source');
+        if (u) c = u + (q.get('utm_medium') ? '/' + q.get('utm_medium') : '') + (q.get('utm_campaign') ? '/' + q.get('utm_campaign') : '');
+        else if (document.referrer && document.referrer.indexOf(location.hostname) < 0) c = new URL(document.referrer).hostname.replace(/^www\./, '');
+        else c = 'direto';
+        sessionStorage.setItem('rn_canal', c);
+        return c;
+      } catch (e) { return 'direto'; }
+    })();
     window.rnEnviar = function (form, ok, falha) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var b = form.querySelector('[type=submit]'), t = b ? b.textContent : '';
         if (b) { b.disabled = true; b.textContent = 'Enviando...'; }
-        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+        var fd = new FormData(form);
+        fd.set('canal', window.rnCanal);
+        if (fd.get('_subject')) fd.set('_subject', fd.get('_subject') + ' · via ' + window.rnCanal);
+        // Kit: também manda o link por e-mail (só funciona depois que a chave do Brevo estiver na Netlify)
+        if (form.classList.contains('kit-form') && fd.get('email')) {
+          fetch('/.netlify/functions/kit', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: fd.get('email'), canal: window.rnCanal }) }).catch(function () {});
+        }
+        fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } })
           .then(function (r) { if (!r.ok) throw r; ok(); })
           .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
       });

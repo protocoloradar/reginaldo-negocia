@@ -279,6 +279,47 @@
       margin: 0 auto 2rem;
     }
 
+    .btn { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; padding: 1rem 2.5rem; text-decoration: none; border-radius: 2px; transition: var(--transition); cursor: pointer; border: none; display: inline-block; }
+    .btn-primary { background: var(--ouro); color: var(--petroleo-dark); }
+    .btn-primary:hover { background: var(--ouro-light); }
+    .btn-primary:disabled { opacity: 0.6; cursor: wait; }
+    .btn-outline { background: transparent; color: var(--ouro); border: 1px solid var(--ouro); }
+    .btn-outline:hover { background: var(--ouro); color: var(--petroleo-dark); }
+    .aviso-ia { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; margin: -0.5rem 0 0.5rem; }
+    .roteiro-card { scroll-margin-top: 90px; display: none; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 4px; padding: 2.5rem; animation: fadeIn 0.6s ease; }
+    .roteiro-card.active { display: block; }
+    .roteiro-topo { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+    .roteiro-eyebrow { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--ouro); }
+    .roteiro-status { font-size: 0.8rem; color: var(--text-muted); }
+    .roteiro-status.carregando::after { content: ''; display: inline-block; width: 0.6rem; height: 0.6rem; margin-left: 0.5rem; border-radius: 50%; background: var(--ouro); animation: pulsa 1s ease-in-out infinite; }
+    @keyframes pulsa { 0%, 100% { opacity: 0.2 } 50% { opacity: 1 } }
+    .roteiro { font-size: 0.95rem; line-height: 1.75; color: var(--text-primary); overflow-wrap: anywhere; }
+    .roteiro h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 500; color: var(--ouro); margin: 1.8rem 0 0.5rem; }
+    .roteiro h3:first-child { margin-top: 0; }
+    .roteiro p { margin: 0.4rem 0; color: var(--text-secondary); }
+    .roteiro ul { margin: 0.4rem 0 0.4rem 1.2rem; color: var(--text-secondary); }
+    .roteiro li { margin: 0.35rem 0; }
+    .roteiro strong { color: var(--text-primary); font-weight: 600; }
+    .roteiro-acoes { display: none; gap: 0.75rem; flex-wrap: wrap; margin-top: 2rem; }
+    .roteiro-acoes.active { display: flex; }
+    .roteiro-acoes .btn { flex: 1 1 160px; justify-content: center; text-align: center; }
+    .roteiro-nota { font-size: 0.78rem; color: var(--text-muted); margin-top: 1rem; line-height: 1.5; }
+    .roteiro-cta { display: none; margin-top: 2rem; padding: 1.75rem; border: 1px solid var(--ouro); border-radius: 4px; text-align: center; }
+    .roteiro-cta.active { display: block; }
+    .roteiro-cta h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--ouro); margin-bottom: 0.4rem; }
+    .roteiro-cta p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.2rem; }
+    .roteiro-cta .cta-link { display: block; margin-top: 1rem; font-size: 0.82rem; color: var(--text-secondary); }
+    @media (max-width: 768px) { .roteiro-card { padding: 1.5rem; } }
+    @media print {
+      nav, footer, .page-header, .prep-intro, #form-container, #success-message, #roteiro-acoes, #roteiro-cta, #roteiro-nota, #roteiro-status { display: none !important; }
+      html, body { background: #fff !important; }
+      .prep-container { margin: 0 !important; max-width: none !important; padding: 0 !important; }
+      #roteiro-card { border: 0 !important; padding: 0 !important; background: #fff !important; animation: none !important; }
+      .roteiro, .roteiro p, .roteiro ul, .roteiro li, .roteiro strong { color: #111 !important; }
+      .roteiro h3, .roteiro-eyebrow { color: #7a5c12 !important; }
+      .roteiro h3 { break-after: avoid; }
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -375,12 +416,33 @@
   </style>
   <script>
     // Envia formulários do Formspree sem sair da página
+    // De onde a pessoa veio (primeira página da visita): utm_source ou site de origem
+    window.rnCanal = (function () {
+      try {
+        var c = sessionStorage.getItem('rn_canal');
+        if (c) return c;
+        var q = new URLSearchParams(location.search), u = q.get('utm_source');
+        if (u) c = u + (q.get('utm_medium') ? '/' + q.get('utm_medium') : '') + (q.get('utm_campaign') ? '/' + q.get('utm_campaign') : '');
+        else if (document.referrer && document.referrer.indexOf(location.hostname) < 0) c = new URL(document.referrer).hostname.replace(/^www\./, '');
+        else c = 'direto';
+        sessionStorage.setItem('rn_canal', c);
+        return c;
+      } catch (e) { return 'direto'; }
+    })();
     window.rnEnviar = function (form, ok, falha) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var b = form.querySelector('[type=submit]'), t = b ? b.textContent : '';
         if (b) { b.disabled = true; b.textContent = 'Enviando...'; }
-        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+        var fd = new FormData(form);
+        fd.set('canal', window.rnCanal);
+        if (fd.get('_subject')) fd.set('_subject', fd.get('_subject') + ' · via ' + window.rnCanal);
+        // Kit: também manda o link por e-mail (só funciona depois que a chave do Brevo estiver na Netlify)
+        if (form.classList.contains('kit-form') && fd.get('email')) {
+          fetch('/.netlify/functions/kit', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: fd.get('email'), canal: window.rnCanal }) }).catch(function () {});
+        }
+        fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } })
           .then(function (r) { if (!r.ok) throw r; ok(); })
           .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
       });
@@ -426,13 +488,14 @@
   <div class="prep-container">
     <div class="prep-intro">
       <h3>Como funciona</h3>
-      <p>Você descreve sua negociação em 4 campos. Eu analiso o cenário e envio um roteiro estratégico personalizado com: abertura recomendada, concessões calculadas, perguntas que deslocam o poder, e opções de fechamento. Resposta em até 24 horas úteis.</p>
+      <p>Você descreve sua negociação em 4 campos. Em menos de um minuto, o Prep monta o roteiro com o meu método: leitura do outro lado, abertura recomendada, concessões calculadas, perguntas que deslocam o poder e opções de fechamento. O roteiro aparece aqui na tela, pronto para copiar ou salvar em PDF.</p>
     </div>
 
     <div class="form-card" id="form-container">
       <form id="prep-form" action="https://formspree.io/f/xbdwnjav" method="POST">
         <input type="hidden" name="_subject" value="[Prep Estratégico] Nova solicitação de roteiro">
         <input type="hidden" name="origem" value="prep_ia">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
 
         <div class="form-group">
           <label for="negociacao">O que você está negociando? <span class="required">*</span></label>
@@ -461,7 +524,7 @@
         <div class="form-group">
           <label for="email">Seu e-mail <span class="required">*</span></label>
           <input type="email" id="email" name="email" placeholder="Seu melhor e-mail" required>
-          <div class="hint">O roteiro será enviado para este e-mail.</div>
+          <div class="hint">Para receber o roteiro e conteúdos sobre negociação.</div>
         </div>
 
         <div class="form-group">
@@ -473,8 +536,29 @@
           </div>
         </div>
 
+        <p class="aviso-ia">O roteiro é gerado por inteligência artificial (Claude, da Anthropic) só a partir do que você descrever. Evite colocar nomes de empresas e pessoas.</p>
         <button type="submit" class="btn btn-primary submit-btn">Gerar Roteiro Estratégico →</button>
       </form>
+    </div>
+
+    <div class="roteiro-card" id="roteiro-card" aria-live="polite">
+      <div class="roteiro-topo">
+        <span class="roteiro-eyebrow">Seu roteiro estratégico</span>
+        <span class="roteiro-status" id="roteiro-status">Analisando o seu cenário...</span>
+      </div>
+      <div class="roteiro" id="roteiro"></div>
+      <div class="roteiro-acoes" id="roteiro-acoes">
+        <button type="button" class="btn btn-primary" id="btn-copiar">Copiar roteiro</button>
+        <button type="button" class="btn btn-outline" id="btn-pdf">Salvar em PDF</button>
+        <button type="button" class="btn btn-outline" id="btn-nova">Nova análise</button>
+      </div>
+      <p class="roteiro-nota" id="roteiro-nota"></p>
+      <div class="roteiro-cta" id="roteiro-cta">
+        <h4>Negociação crítica?</h4>
+        <p>Eu reviso o seu caso pessoalmente antes da reunião.</p>
+        <a class="btn btn-primary" target="_blank" rel="noopener" href="https://wa.me/5511947909315?text=Ol%C3%A1%2C%20Reginaldo.%20Gerei%20um%20roteiro%20no%20Prep%20Estrat%C3%A9gico%20e%20quero%20sua%20revis%C3%A3o%20pessoal.">Quero a revisão do Reginaldo</a>
+        <a class="cta-link" href="/para-empresas.html">Seu time negocia todo dia? Veja os formatos para empresas →</a>
+      </div>
     </div>
 
     <div class="success-message" id="success-message">
@@ -530,18 +614,132 @@
   </footer>
 
   <script>
-    const form = document.getElementById('prep-form');
-    const formContainer = document.getElementById('form-container');
-    const successMessage = document.getElementById('success-message');
+    (function () {
+      var form = document.getElementById('prep-form');
+      var formContainer = document.getElementById('form-container');
+      var intro = document.querySelector('.prep-intro');
+      var successMessage = document.getElementById('success-message');
+      var card = document.getElementById('roteiro-card');
+      var area = document.getElementById('roteiro');
+      var status = document.getElementById('roteiro-status');
+      var acoes = document.getElementById('roteiro-acoes');
+      var nota = document.getElementById('roteiro-nota');
+      var cta = document.getElementById('roteiro-cta');
+      var btn = form.querySelector('[type=submit]');
+      var texto = '';
 
-    rnEnviar(form, function () {
-      formContainer.style.display = 'none';
-      successMessage.classList.add('active');
-      successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, function () {
-      var st = form.querySelector('.form-status') || form.appendChild(Object.assign(document.createElement('p'), { className: 'form-status' }));
-      st.innerHTML = 'Não foi possível enviar agora. Me chama no <a href="https://wa.me/5511947909315" target="_blank" rel="noopener">WhatsApp</a>.';
-    });
+      function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+      function neg(t) { return esc(t).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'); }
+      function render(t) {
+        var html = '', lista = false;
+        t.split('\n').forEach(function (linha) {
+          var l = linha.trim();
+          if (lista && l.indexOf('- ') !== 0) { html += '</ul>'; lista = false; }
+          if (!l) return;
+          if (l.indexOf('## ') === 0) html += '<h3>' + neg(l.slice(3)) + '</h3>';
+          else if (l.indexOf('- ') === 0) { if (!lista) { html += '<ul>'; lista = true; } html += '<li>' + neg(l.slice(2)) + '</li>'; }
+          else html += '<p>' + neg(l) + '</p>';
+        });
+        area.innerHTML = html + (lista ? '</ul>' : '');
+      }
+
+      // Cópia do pedido para o Reginaldo (Formspree), sem travar a tela
+      function avisarReginaldo(assunto) {
+        var fd = new FormData(form);
+        fd.delete('website');
+        fd.set('canal', window.rnCanal);
+        fd.set('_subject', assunto + ' · via ' + window.rnCanal);
+        return fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
+      }
+
+      // Se a IA não responder, volta para o modo antigo: o pedido chega por e-mail e a resposta sai em até 24h
+      function modoAntigo() {
+        avisarReginaldo('[Prep Estratégico] Nova solicitação de roteiro (responder manualmente)')
+          .then(function (r) { if (!r.ok) throw r; card.classList.remove('active'); formContainer.style.display = 'none'; successMessage.classList.add('active'); successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' }); })
+          .catch(function () { falhaTotal(); });
+      }
+      function falhaTotal() {
+        card.classList.remove('active'); formContainer.style.display = ''; intro.style.display = '';
+        btn.disabled = false; btn.textContent = 'Gerar Roteiro Estratégico →';
+        var st = form.querySelector('.form-status') || form.appendChild(Object.assign(document.createElement('p'), { className: 'form-status' }));
+        st.innerHTML = 'Não foi possível gerar agora. Me chama no <a href="https://wa.me/5511947909315" target="_blank" rel="noopener">WhatsApp</a>.';
+      }
+      function concluir(emailEnviado) {
+        status.classList.remove('carregando');
+        status.textContent = 'Pronto';
+        acoes.classList.add('active'); cta.classList.add('active');
+        nota.textContent = (emailEnviado ? 'Enviamos uma cópia para o seu e-mail. ' : '') + 'Roteiro gerado por IA a partir do que você descreveu. Use como preparação: a decisão na mesa é sua.';
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var st = form.querySelector('.form-status'); if (st) st.remove();
+        var fd = new FormData(form), dados = {};
+        ['negociacao', 'posicao', 'outro_lado', 'contexto', 'email', 'website'].forEach(function (k) { dados[k] = fd.get(k) || ''; });
+        btn.disabled = true; btn.textContent = 'Analisando...';
+        texto = ''; area.innerHTML = ''; nota.textContent = '';
+        acoes.classList.remove('active'); cta.classList.remove('active');
+
+        fetch('/api/prep', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) })
+          .then(function (r) {
+            if (r.status === 429) {
+              btn.disabled = false; btn.textContent = 'Gerar Roteiro Estratégico →';
+              var s2 = form.appendChild(Object.assign(document.createElement('p'), { className: 'form-status' }));
+              s2.textContent = 'Você gerou vários roteiros seguidos. Aguarde 3 minutos e tente de novo.';
+              return;
+            }
+            var tipo = r.headers.get('content-type') || '';
+            if (!r.ok || !r.body || tipo.indexOf('text/event-stream') < 0) { modoAntigo(); return; }
+
+            avisarReginaldo('[Prep Estratégico] Roteiro gerado na hora').catch(function () {});
+            intro.style.display = 'none'; formContainer.style.display = 'none';
+            card.classList.add('active');
+            status.textContent = 'Analisando o seu cenário...'; status.classList.add('carregando');
+            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            var leitor = r.body.getReader(), dec = new TextDecoder(), buf = '', fim = false, emailOk = false, pend = false, erroIA = false;
+            function agenda() { if (pend) return; pend = true; requestAnimationFrame(function () { pend = false; render(texto); }); }
+            function evento(bloco) {
+              var nome = '', data = '';
+              bloco.split('\n').forEach(function (l) { if (l.indexOf('event: ') === 0) nome = l.slice(7).trim(); else if (l.indexOf('data: ') === 0) data += l.slice(6); });
+              if (!data) return;
+              var ev; try { ev = JSON.parse(data); } catch (x) { return; }
+              if (nome === 'prep_fim') { fim = true; emailOk = !!ev.email; return; }
+              if (ev.type === 'content_block_delta' && ev.delta && ev.delta.type === 'text_delta') { texto += ev.delta.text; status.textContent = 'Escrevendo o roteiro...'; agenda(); }
+              if (ev.type === 'error') erroIA = true;
+            }
+            function ler() {
+              return leitor.read().then(function (p) {
+                if (p.value) {
+                  buf += dec.decode(p.value, { stream: true });
+                  var partes = buf.split('\n\n'); buf = partes.pop();
+                  partes.forEach(evento);
+                }
+                if (!p.done) return ler();
+                if (buf.trim()) evento(buf);
+                render(texto);
+                if (texto.trim().length < 20) { modoAntigo(); return; }
+                concluir(emailOk);
+                if (erroIA || !fim) nota.textContent = 'O roteiro pode ter ficado incompleto. Se precisar, gere de novo ou me chame no WhatsApp. ' + nota.textContent;
+              });
+            }
+            return ler();
+          })
+          .catch(function () { if (texto.trim().length > 20) { render(texto); concluir(false); } else modoAntigo(); });
+      });
+
+      document.getElementById('btn-copiar').addEventListener('click', function () {
+        var b = this, t = texto.replace(/\*\*/g, '').trim();
+        var ok = function () { b.textContent = 'Copiado ✓'; setTimeout(function () { b.textContent = 'Copiar roteiro'; }, 2000); };
+        if (navigator.clipboard) navigator.clipboard.writeText(t).then(ok, function () {});
+      });
+      document.getElementById('btn-pdf').addEventListener('click', function () { window.print(); });
+      document.getElementById('btn-nova').addEventListener('click', function () {
+        card.classList.remove('active'); intro.style.display = ''; formContainer.style.display = '';
+        btn.disabled = false; btn.textContent = 'Gerar Roteiro Estratégico →';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
   </script>
 </body>
 </html>

@@ -1,0 +1,38 @@
+SITE reginaldonegocia.com.br · atualização de 08/10 (inclui tudo da de 07/10, que ainda não tinha subido)
+
+1. ANTES DE SUBIR (uma vez)
+   Netlify > projeto do reginaldonegocia.com.br > Project configuration > Environment variables:
+   precisa existir ANTHROPIC_API_KEY com a chave do console (nunca mande a chave em chat).
+
+2. SUBIR NO GITHUB (repositório reginaldo-negocia)
+   - Os 9 arquivos .html: substituir os que já estão lá.
+   - netlify/functions/kit.js  (mantendo o caminho)
+   - netlify/edge-functions/prep.js  (pasta nova, mantendo o caminho)
+   - Na mensagem do commit NÃO coloque [skip netlify]: esta atualização precisa publicar.
+
+3. O QUE MUDOU HOJE (Prep Estratégico)
+   - O roteiro sai na hora, na tela, em menos de um minuto, com botões Copiar, Salvar em PDF e Nova análise.
+   - No fim do roteiro: "Negociação crítica? Eu reviso pessoalmente" (WhatsApp) e link para Para empresas.
+   - Você continua recebendo cada pedido por e-mail (Formspree), com o assunto "Roteiro gerado na hora".
+   - Se a IA falhar ou o crédito acabar, a página volta sozinha para o modo antigo ("até 24 horas")
+     e o pedido chega com o assunto "responder manualmente".
+   - Limite: 3 roteiros a cada 3 minutos por pessoa. Campos com tamanho máximo. Proteção contra robô.
+   - Cópia por e-mail: começa a sair sozinha quando o Brevo estiver configurado (mesmas variáveis do Kit).
+   - Privacidade: aviso de que o cenário é processado por IA e lista com Anthropic e Brevo.
+   - Modelo: Claude Sonnet 5.5. Para baratear, crie a variável PREP_MODEL = claude-haiku-5-5.
+
+4. O QUE MUDOU EM 07/10 (já estava neste pacote)
+   - Para empresas: Assessment e Advisor com o texto da v3 e a garantia; FAQ; "Conversa de 30 min, sem custo".
+   - Home: cartão do Assessment com 14 dias, Mesa Real e garantia.
+   - Contato: opção "Conversa de 30 min (sem custo)".
+   - Todos os formulários: o e-mail que chega mostra de onde a pessoa veio (ex.: "via instagram/bio").
+   - Kit: além do download, manda o link por e-mail pelo Brevo (depois do passo 5).
+
+5. BREVO (quando for fazer, vale para o Kit e para o Prep)
+   a) Brevo: autenticar o domínio reginaldonegocia.com.br.
+   b) Brevo: criar uma chave de API. Não mande a chave em chat.
+   c) Netlify > Environment variables: BREVO_API_KEY, BREVO_SENDER_EMAIL (ex.: contato@reginaldonegocia.com.br), BREVO_LIST_ID.
+   d) Netlify > Deploys > Trigger deploy.
+
+6. TESTE DEPOIS DE PUBLICAR
+   Abra reginaldonegocia.com.br/prep-ia.html, preencha um caso e veja o roteiro aparecer escrevendo na tela.
