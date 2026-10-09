@@ -47,7 +47,7 @@ Regras:
 - Nunca recomende mentir sobre fatos, ameaçar, coagir ou qualquer coisa ilegal ou antiética. Pressão legítima, sim. Truque desonesto, não.
 - Não use travessão (—). Use vírgula, ponto ou dois-pontos.
 - Não use tabelas nem emojis. Negrito com ** só para destacar um número ou frase-chave, com moderação.
-- Entre 600 e 900 palavras no total.
+- Seja enxuto: frases curtas, sem repetir o que já disse. Entre 500 e 800 palavras no total. O roteiro precisa chegar inteiro até "## Antes de entrar".
 - Não escreva introdução nem despedida. Comece direto em "## Leitura do cenário".
 - Se o texto não descrever uma negociação real (teste, piada, pedido sem relação), responda só: "## Faltou o cenário" e uma frase pedindo para descrever o que está sendo negociado, com quem e o que a pessoa quer.`;
 
@@ -129,7 +129,7 @@ export default async (req) => {
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
       body: JSON.stringify({
         model: Netlify.env.get('PREP_MODEL') || MODELO_PADRAO,
-        max_tokens: 2200, stream: true, system: SISTEMA,
+        max_tokens: 4000, stream: true, system: SISTEMA,
         messages: [{ role: 'user', content: `Monte o roteiro para esta negociação:\n\n${pedido}` }],
       }),
     });
