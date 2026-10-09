@@ -457,14 +457,21 @@
         var fd = new FormData(form);
         fd.set('canal', window.rnCanal);
         if (fd.get('_subject')) fd.set('_subject', fd.get('_subject') + ' · via ' + window.rnCanal);
-        // Kit: também manda o link por e-mail (só funciona depois que a chave do Brevo estiver na Netlify)
+        var formspree = function () {
+          fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } })
+            .then(function (r) { if (!r.ok) throw r; ok(); })
+            .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
+        };
+        // Kit: e-mail para a pessoa e aviso para o Reginaldo pelo Brevo; o Formspree só entra se o Brevo falhar
         if (form.classList.contains('kit-form') && fd.get('email')) {
           fetch('/.netlify/functions/kit', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: fd.get('email'), canal: window.rnCanal }) }).catch(function () {});
+            body: JSON.stringify({ email: fd.get('email'), canal: window.rnCanal, origem: fd.get('origem') || 'kit', pagina: location.pathname }) })
+            .then(function (r) { return r.json(); })
+            .then(function (j) { if (j && j.avisado) ok(); else formspree(); })
+            .catch(formspree);
+          return;
         }
-        fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } })
-          .then(function (r) { if (!r.ok) throw r; ok(); })
-          .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
+        formspree();
       });
     };
     window.rnBaixarKit = function () {

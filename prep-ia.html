@@ -448,14 +448,21 @@
         var fd = new FormData(form);
         fd.set('canal', window.rnCanal);
         if (fd.get('_subject')) fd.set('_subject', fd.get('_subject') + ' · via ' + window.rnCanal);
-        // Kit: também manda o link por e-mail (só funciona depois que a chave do Brevo estiver na Netlify)
+        var formspree = function () {
+          fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } })
+            .then(function (r) { if (!r.ok) throw r; ok(); })
+            .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
+        };
+        // Kit: e-mail para a pessoa e aviso para o Reginaldo pelo Brevo; o Formspree só entra se o Brevo falhar
         if (form.classList.contains('kit-form') && fd.get('email')) {
           fetch('/.netlify/functions/kit', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: fd.get('email'), canal: window.rnCanal }) }).catch(function () {});
+            body: JSON.stringify({ email: fd.get('email'), canal: window.rnCanal, origem: fd.get('origem') || 'kit', pagina: location.pathname }) })
+            .then(function (r) { return r.json(); })
+            .then(function (j) { if (j && j.avisado) ok(); else formspree(); })
+            .catch(formspree);
+          return;
         }
-        fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' } })
-          .then(function (r) { if (!r.ok) throw r; ok(); })
-          .catch(function () { if (b) { b.disabled = false; b.textContent = t; } if (falha) falha(); });
+        formspree();
       });
     };
     window.rnBaixarKit = function () {
@@ -699,6 +706,7 @@
         var st = form.querySelector('.form-status'); if (st) st.remove();
         var fd = new FormData(form), dados = {};
         ['negociacao', 'posicao', 'outro_lado', 'contexto', 'email', 'website'].forEach(function (k) { dados[k] = fd.get(k) || ''; });
+        dados.canal = window.rnCanal || 'direto';
         btn.disabled = true; btn.textContent = 'Analisando...';
         texto = ''; area.innerHTML = ''; nota.textContent = '';
         acoes.classList.remove('active'); cta.classList.remove('active');
@@ -714,20 +722,19 @@
             var tipo = r.headers.get('content-type') || '';
             if (!r.ok || !r.body || tipo.indexOf('text/event-stream') < 0) { modoAntigo(); return; }
 
-            avisarReginaldo('[Prep Estratégico] Roteiro gerado na hora').catch(function () {});
             intro.style.display = 'none'; formContainer.style.display = 'none';
             card.classList.add('active');
             status.textContent = 'Analisando o seu cenário...'; status.classList.add('carregando');
             card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            var leitor = r.body.getReader(), dec = new TextDecoder(), buf = '', fim = false, emailOk = false, pend = false, erroIA = false, cortado = false;
+            var leitor = r.body.getReader(), dec = new TextDecoder(), buf = '', fim = false, emailOk = false, avisoOk = false, pend = false, erroIA = false, cortado = false;
             function agenda() { if (pend) return; pend = true; requestAnimationFrame(function () { pend = false; render(texto); }); }
             function evento(bloco) {
               var nome = '', data = '';
               bloco.split('\n').forEach(function (l) { if (l.indexOf('event: ') === 0) nome = l.slice(7).trim(); else if (l.indexOf('data: ') === 0) data += l.slice(6); });
               if (!data) return;
               var ev; try { ev = JSON.parse(data); } catch (x) { return; }
-              if (nome === 'prep_fim') { fim = true; emailOk = !!ev.email; return; }
+              if (nome === 'prep_fim') { fim = true; emailOk = !!ev.email; avisoOk = !!ev.avisado; return; }
               if (ev.type === 'content_block_delta' && ev.delta && ev.delta.type === 'text_delta') { texto += ev.delta.text; status.textContent = 'Escrevendo o roteiro...'; agenda(); }
               if (ev.type === 'error') erroIA = true;
               if (ev.type === 'message_delta' && ev.delta && ev.delta.stop_reason === 'max_tokens') cortado = true;
@@ -744,12 +751,13 @@
                 render(texto);
                 if (texto.trim().length < 20) { modoAntigo(); return; }
                 concluir(emailOk);
+                if (!avisoOk) avisarReginaldo('[Prep Estratégico] Roteiro gerado na hora').catch(function () {});
                 if (erroIA || !fim || cortado) nota.textContent = 'O roteiro pode ter ficado incompleto. Se precisar, gere de novo ou me chame no WhatsApp. ' + nota.textContent;
               });
             }
             return ler();
           })
-          .catch(function () { if (texto.trim().length > 20) { render(texto); concluir(false); } else modoAntigo(); });
+          .catch(function () { if (texto.trim().length > 20) { render(texto); concluir(false); avisarReginaldo('[Prep Estratégico] Roteiro gerado na hora').catch(function () {}); } else modoAntigo(); });
       });
 
       document.getElementById('btn-copiar').addEventListener('click', function () {
