@@ -11,6 +11,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Kit de Decisão Gratuito — Como ler o jogo antes de entrar nele. Checklist, mini-ebook e roteiro de perguntas.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Reginaldo Negocia">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Kit de Decisão Gratuito | Reginaldo Negocia">
+  <meta property="og:description" content="Kit de Decisão Gratuito — Como ler o jogo antes de entrar nele. Checklist, mini-ebook e roteiro de perguntas.">
+  <meta property="og:url" content="https://reginaldonegocia.com.br/kit">
+  <meta property="og:image" content="https://reginaldonegocia.com.br/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <title>Kit de Decisão Gratuito | Reginaldo Negocia</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -535,6 +545,17 @@
       a.href = '/kit-v2.pdf'; a.download = 'Kit_de_Decisao_Reginaldo_Negocia.pdf';
       document.body.appendChild(a); a.click(); a.remove();
     };
+    // WhatsApp: toda conversa chega dizendo de onde a pessoa veio e em qual página estava
+    document.addEventListener('DOMContentLoaded', function () {
+      var pag = location.pathname.replace(/^\/+|\.html$/g, '').replace(/^index$/, '') || 'inicio';
+      document.querySelectorAll('a[href*="wa.me/5511947909315"]').forEach(function (a) {
+        try {
+          var t = new URL(a.href).searchParams.get('text') || 'Olá, Reginaldo. Vim pelo site e quero conversar.';
+          if (t.indexOf('[origem:') < 0) t += ' [origem: ' + (window.rnCanal || 'direto') + ' · ' + pag + ']';
+          a.href = 'https://wa.me/5511947909315?text=' + encodeURIComponent(t);
+        } catch (e) {}
+      });
+    });
     // Menu do celular
     document.addEventListener('DOMContentLoaded', function () {
       var b = document.querySelector('.mobile-menu-btn'), l = document.querySelector('.nav-links');

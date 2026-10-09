@@ -11,6 +11,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Sobre Reginaldo Negocia — Dezenove anos sentado do lado da mesa que decide.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Reginaldo Negocia">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Sobre | Reginaldo Negocia">
+  <meta property="og:description" content="Sobre Reginaldo Negocia — Dezenove anos sentado do lado da mesa que decide.">
+  <meta property="og:url" content="https://reginaldonegocia.com.br/sobre">
+  <meta property="og:image" content="https://reginaldonegocia.com.br/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <title>Sobre | Reginaldo Negocia</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -159,6 +169,13 @@
       padding: 0 4%;
     }
 
+    .numeros { margin: 0 0 4rem; padding: 2.5rem; border: 1px solid var(--border); border-left: 2px solid var(--ouro); border-radius: 4px; background: rgba(255,255,255,0.02); }
+    .numeros h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 400; color: var(--ouro); margin-bottom: 1.25rem; }
+    .numeros ul { list-style: none; margin: 0 0 1.5rem; padding: 0; }
+    .numeros li { padding: 0.55rem 0; border-bottom: 1px solid var(--border); color: var(--text-secondary); font-size: 0.98rem; line-height: 1.6; }
+    .numeros li strong { color: var(--text-primary); font-weight: 600; }
+    .numeros p.fecho { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-style: italic; color: var(--text-primary); margin: 0; }
+    @media (max-width: 768px) { .numeros { padding: 1.5rem; } }
     .about-section {
       margin-bottom: 4rem;
     }
@@ -412,6 +429,17 @@
       a.href = '/kit-v2.pdf'; a.download = 'Kit_de_Decisao_Reginaldo_Negocia.pdf';
       document.body.appendChild(a); a.click(); a.remove();
     };
+    // WhatsApp: toda conversa chega dizendo de onde a pessoa veio e em qual página estava
+    document.addEventListener('DOMContentLoaded', function () {
+      var pag = location.pathname.replace(/^\/+|\.html$/g, '').replace(/^index$/, '') || 'inicio';
+      document.querySelectorAll('a[href*="wa.me/5511947909315"]').forEach(function (a) {
+        try {
+          var t = new URL(a.href).searchParams.get('text') || 'Olá, Reginaldo. Vim pelo site e quero conversar.';
+          if (t.indexOf('[origem:') < 0) t += ' [origem: ' + (window.rnCanal || 'direto') + ' · ' + pag + ']';
+          a.href = 'https://wa.me/5511947909315?text=' + encodeURIComponent(t);
+        } catch (e) {}
+      });
+    });
     // Menu do celular
     document.addEventListener('DOMContentLoaded', function () {
       var b = document.querySelector('.mobile-menu-btn'), l = document.querySelector('.nav-links');
@@ -458,6 +486,19 @@
       <p>Dezenove anos sentado do lado da mesa que decide. Em compras corporativas, em expansões nacionais, em mesas onde cada decisão movia milhões.</p>
       <p>O suficiente para entender que o preço quase nunca é o problema — e que a maioria das negociações é decidida antes da proposta ser apresentada.</p>
       <p>Reginaldo Negocia é sobre a leitura do jogo por trás da mesa — não a teoria, a dinâmica real. Sobre presença, leitura e posicionamento na prática. Para quem precisa decidir, vender, comprar e negociar com mais controle.</p>
+    </div>
+
+    <div class="numeros">
+      <h3>Os números que sustentam o método</h3>
+      <ul>
+        <li><strong>19 anos</strong> comprando para operações grandes, do lado que decide.</li>
+        <li><strong>Mais de R$ 2 bilhões</strong> em negociações conduzidas.</li>
+        <li><strong>R$ 36 milhões</strong> em economia gerada em compras.</li>
+        <li><strong>100 lojas</strong> viabilizadas em 12 meses numa expansão nacional, com <strong>redução de 12% no CAPEX</strong>.</li>
+        <li><strong>24 profissionais</strong> liderados em <strong>11 filiais</strong>.</li>
+        <li><strong>Mais de 60 categorias</strong> de compra sob gestão.</li>
+      </ul>
+      <p class="fecho">Não é teoria de manual. É o que aconteceu quando eu era o cara que respondia pela decisão.</p>
     </div>
 
     <div class="pillars">

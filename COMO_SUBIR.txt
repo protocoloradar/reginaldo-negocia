@@ -1,0 +1,21 @@
+SITE reginaldonegocia.com.br · atualização de 08/10 (noite)
+
+SUBIR NO GITHUB (repositório reginaldo-negocia), substituindo os que já estão lá:
+  - Os 9 arquivos .html de sempre
+  - 404.html (novo, na raiz)
+  - og.jpg (novo, na raiz: é a imagem que aparece quando o link é compartilhado)
+  - netlify/functions/kit.js
+  - netlify/edge-functions/prep.js
+A publicação é automática.
+
+O QUE MUDOU
+  1. Prep: novo método de raciocínio (leitura do poder com números, contrapartida que custa pouco e vale muito,
+     concessões da mais barata para a mais cara, abertura sem pedir favor, leitura de quem está na mesa,
+     sinais durante a reunião). Agora são 11 seções.
+  2. WhatsApp: todo botão do site abre a conversa com a origem no fim da mensagem,
+     ex.: "[origem: instagram/bio · para-empresas]".
+  3. Sobre: bloco "Os números que sustentam o método".
+  4. Início: números reais no lugar de "movia milhões" e a linha "Negociação crítica na sua mesa? Me chama no WhatsApp".
+  5. E-mail do Kit: termina com o próximo passo (Prep) e o WhatsApp com mensagem própria. Só sai depois do Brevo.
+  6. Prévia de link (Open Graph) em todas as páginas, com a imagem og.jpg.
+  7. Página 404 com a marca e caminhos de volta.

@@ -11,6 +11,16 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Reginaldo Negocia — Estratégia, leitura humana e posicionamento para quem precisa decidir, vender, comprar e negociar com mais controle.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Reginaldo Negocia">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Reginaldo Negocia | Estratégia, Leitura e Posicionamento">
+  <meta property="og:description" content="Reginaldo Negocia — Estratégia, leitura humana e posicionamento para quem precisa decidir, vender, comprar e negociar com mais controle.">
+  <meta property="og:url" content="https://reginaldonegocia.com.br/">
+  <meta property="og:image" content="https://reginaldonegocia.com.br/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <title>Reginaldo Negocia | Estratégia, Leitura e Posicionamento</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -451,6 +461,8 @@
       color: var(--ouro);
     }
 
+    .about-text p.ponte-wa { color: var(--text-primary); }
+    .about-text p.ponte-wa a { color: var(--ouro); text-decoration: underline; text-underline-offset: 3px; }
     .about-text p {
       font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
@@ -780,6 +792,17 @@
       a.href = '/kit-v2.pdf'; a.download = 'Kit_de_Decisao_Reginaldo_Negocia.pdf';
       document.body.appendChild(a); a.click(); a.remove();
     };
+    // WhatsApp: toda conversa chega dizendo de onde a pessoa veio e em qual página estava
+    document.addEventListener('DOMContentLoaded', function () {
+      var pag = location.pathname.replace(/^\/+|\.html$/g, '').replace(/^index$/, '') || 'inicio';
+      document.querySelectorAll('a[href*="wa.me/5511947909315"]').forEach(function (a) {
+        try {
+          var t = new URL(a.href).searchParams.get('text') || 'Olá, Reginaldo. Vim pelo site e quero conversar.';
+          if (t.indexOf('[origem:') < 0) t += ' [origem: ' + (window.rnCanal || 'direto') + ' · ' + pag + ']';
+          a.href = 'https://wa.me/5511947909315?text=' + encodeURIComponent(t);
+        } catch (e) {}
+      });
+    });
     // Menu do celular
     document.addEventListener('DOMContentLoaded', function () {
       var b = document.querySelector('.mobile-menu-btn'), l = document.querySelector('.nav-links');
@@ -875,8 +898,14 @@
           Dezenove anos sentado do lado da mesa que decide. <em>O suficiente para entender que o preço quase nunca é o problema.</em>
         </h2>
         <p>
-          Em compras corporativas, em expansões nacionais, em mesas onde cada decisão movia milhões. 
+          Mais de R$ 2 bilhões em negociações conduzidas. R$ 36 milhões em economia gerada em compras. 100 lojas viabilizadas em 12 meses.
+          Não é teoria de manual. É o que aconteceu quando eu era o cara que respondia pela decisão.
+        </p>
+        <p>
           A maioria das negociações é decidida antes da proposta ser apresentada.
+        </p>
+        <p class="ponte-wa">
+          Negociação crítica na sua mesa? <a href="https://wa.me/5511947909315?text=Ol%C3%A1%2C%20Reginaldo.%20Vim%20pelo%20site%20e%20tenho%20uma%20negocia%C3%A7%C3%A3o%20cr%C3%ADtica%20na%20minha%20mesa." target="_blank" rel="noopener">Me chama no WhatsApp</a>: numa conversa de 10 minutos eu te digo se posso ajudar.
         </p>
         <p>
           Reginaldo Negocia é sobre a leitura do jogo por trás da mesa — não a teoria, a dinâmica real.
