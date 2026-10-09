@@ -90,6 +90,27 @@ function emHtml(texto) {
   return html;
 }
 
+// Aviso para o Reginaldo com o pedido completo (substitui o Formspree no Prep)
+async function avisarReginaldo(email, canal, campos, texto, enviado) {
+  const key = Netlify.env.get('BREVO_API_KEY'), sender = Netlify.env.get('BREVO_SENDER_EMAIL');
+  if (!key || !sender) return false;
+  const linha = (rotulo, v) => `<p style="margin:8px 0"><strong>${rotulo}</strong><br>${esc(v).replace(/\n/g, '<br>')}</p>`;
+  const html = `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6;color:#1a1a1a;max-width:640px">
+<p><strong>Novo roteiro gerado no Prep Estratégico</strong><br>E-mail: ${esc(email)}<br>Origem da visita: ${esc(canal)}<br>Cópia enviada para a pessoa: ${enviado ? 'sim' : 'não'}</p>
+${linha('O que está negociando', campos.negociacao)}${linha('Posição / o que quer', campos.posicao)}${linha('Outro lado', campos.outro_lado)}${linha('Contexto', campos.contexto)}
+<hr style="border:0;border-top:1px solid #ddd;margin:20px 0"><p><strong>Roteiro entregue:</strong></p>${texto ? emHtml(texto) : '<p>(vazio)</p>'}</div>`;
+  try {
+    const r = await fetch('https://api.brevo.com/v3/smtp/email', { method: 'POST',
+      headers: { 'api-key': key, 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        sender: { email: sender, name: 'Site Reginaldo Negocia' }, replyTo: { email },
+        to: [{ email: Netlify.env.get('BREVO_NOTIFY_TO') || 'reginaldonegocia@gmail.com' }],
+        subject: `[Prep Estratégico] Roteiro gerado na hora · via ${canal}`, htmlContent: html,
+      }) });
+    return r.ok;
+  } catch (e) { return false; }
+}
+
 async function enviarEmail(email, texto) {
   const key = Netlify.env.get('BREVO_API_KEY'), sender = Netlify.env.get('BREVO_SENDER_EMAIL');
   if (!key || !sender || !texto || texto.startsWith('## Faltou')) return false;
@@ -136,6 +157,7 @@ export default async (req) => {
     outro_lado: limpa(d.outro_lado, 1500), contexto: limpa(d.contexto, 1500),
   };
   const email = limpa(d.email, 200).toLowerCase();
+  const canal = limpa(d.canal, 80) || 'direto';
   if (Object.values(campos).some((v) => v.length < 3) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json(400, { erro: 'dados' });
 
   const pedido = Object.entries(campos).map(([k, v]) => `<${k}>\n${v}\n</${k}>`).join('\n\n');
@@ -168,7 +190,8 @@ export default async (req) => {
         try { const ev = JSON.parse(linha.slice(6)); if (ev.type === 'content_block_delta' && ev.delta && ev.delta.type === 'text_delta') texto += ev.delta.text; } catch (e) {}
       }
       const enviado = await enviarEmail(email, texto.trim());
-      ctl.enqueue(enc.encode(`event: prep_fim\ndata: ${JSON.stringify({ email: enviado })}\n\n`));
+      const avisado = await avisarReginaldo(email, canal, campos, texto.trim(), enviado);
+      ctl.enqueue(enc.encode(`event: prep_fim\ndata: ${JSON.stringify({ email: enviado, avisado })}\n\n`));
     },
   });
   return new Response(r.body.pipeThrough(fluxo), {
