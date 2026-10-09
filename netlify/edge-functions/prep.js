@@ -110,6 +110,7 @@ ${emHtml(texto)}
   try {
     const r = await fetch('https://api.brevo.com/v3/smtp/email', { method: 'POST', headers: h, body: JSON.stringify({
       sender: { email: sender, name: 'Reginaldo Negocia' }, to: [{ email }],
+      replyTo: { email: Netlify.env.get('BREVO_REPLY_TO') || 'reginaldonegocia@gmail.com', name: 'Reginaldo Negocia' },
       subject: 'Seu roteiro do Prep Estratégico', htmlContent: html,
     }) });
     return r.ok;
