@@ -16,6 +16,8 @@ exports.handler = async (event) => {
   const email = String(dados.email || '').trim().toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 200) return json(400, { ok: false });
   const canal = String(dados.canal || 'direto').slice(0, 80);
+  const origem = String(dados.origem || 'kit').slice(0, 40);
+  const pagina = String(dados.pagina || '').slice(0, 80);
   const h = { 'api-key': key, 'Content-Type': 'application/json', Accept: 'application/json' };
 
   const contato = { email, updateEnabled: true };
@@ -32,6 +34,7 @@ exports.handler = async (event) => {
 <p>Se o seu time negocia todo dia e quer treinar com quem passou 19 anos do lado que decide a compra, veja os formatos para empresas: <a href="${SITE}/para-empresas.html">${SITE.replace('https://','')}/para-empresas</a></p>
 <p>Reginaldo<br>Reginaldo Negocia · WhatsApp (11) 94790-9315</p>
 </div>`;
+  let enviado = false, avisado = false;
   try {
     const r = await fetch('https://api.brevo.com/v3/smtp/email', { method: 'POST', headers: h, body: JSON.stringify({
       sender: { email: sender, name: 'Reginaldo Negocia' },
@@ -40,8 +43,22 @@ exports.handler = async (event) => {
       subject: 'Seu Kit de Decisão chegou',
       htmlContent: html,
     }) });
-    return json(200, { ok: r.ok, enviado: r.ok });
-  } catch (e) {
-    return json(200, { ok: false, enviado: false });
-  }
+    enviado = r.ok;
+  } catch (e) {}
+
+  // Aviso para o Reginaldo (substitui o Formspree no Kit)
+  const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  try {
+    const r2 = await fetch('https://api.brevo.com/v3/smtp/email', { method: 'POST', headers: h, body: JSON.stringify({
+      sender: { email: sender, name: 'Site Reginaldo Negocia' },
+      replyTo: { email },
+      to: [{ email: process.env.BREVO_NOTIFY_TO || 'reginaldonegocia@gmail.com' }],
+      subject: `[Kit de Decisão] Nova solicitação · via ${canal}`,
+      htmlContent: `<div style="font-family:Arial,sans-serif;font-size:14px;line-height:1.6">
+<p><strong>Novo pedido do Kit de Decisão</strong></p>
+<p>E-mail: ${esc(email)}<br>Origem da visita: ${esc(canal)}<br>Formulário: ${esc(origem)}${pagina ? ' (' + esc(pagina) + ')' : ''}<br>Kit enviado por e-mail: ${enviado ? 'sim' : 'não'}</p></div>`,
+    }) });
+    avisado = r2.ok;
+  } catch (e) {}
+  return json(200, { ok: enviado || avisado, enviado, avisado });
 };
