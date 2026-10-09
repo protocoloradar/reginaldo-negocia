@@ -35,6 +35,7 @@ exports.handler = async (event) => {
   try {
     const r = await fetch('https://api.brevo.com/v3/smtp/email', { method: 'POST', headers: h, body: JSON.stringify({
       sender: { email: sender, name: 'Reginaldo Negocia' },
+      replyTo: { email: process.env.BREVO_REPLY_TO || 'reginaldonegocia@gmail.com', name: 'Reginaldo Negocia' },
       to: [{ email }],
       subject: 'Seu Kit de Decisão chegou',
       htmlContent: html,
