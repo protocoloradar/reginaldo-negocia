@@ -540,7 +540,7 @@
             <option value="">Selecione...</option>
             <option value="palestra">Palestra</option>
             <option value="assessment">Assessment</option>
-            <option value="mesa-real">Mesa Real (simulação com o time de vendas)</option>
+            <option value="mesa-real">Mesa In Company (simulação com o time de vendas)</option>
             <option value="advisor">Advisor</option>
             <option value="conversa">Conversa de 30 min (sem custo)</option>
             <option value="outro">Outro</option>
@@ -637,7 +637,7 @@
       sel.addEventListener('change', qualifica); qualifica();
       // assunto do e-mail já mostra o que é prioridade
       f.addEventListener('submit', function () {
-        var nomes = { palestra: 'Palestra', assessment: 'Assessment', 'mesa-real': 'Mesa Real', advisor: 'Advisor', conversa: 'Conversa 30 min', outro: 'Outro' };
+        var nomes = { palestra: 'Palestra', assessment: 'Assessment', 'mesa-real': 'Mesa In Company', advisor: 'Advisor', conversa: 'Conversa 30 min', outro: 'Outro' };
         var pri = mo.value === 'urgente' ? 'URGENTE · ' : mo.value === 'negociacao-chegando' ? 'PRIORIDADE · ' : '';
         f.querySelector('[name=_subject]').value = '[Contato] ' + pri + (nomes[sel.value] || 'Mensagem') + (pub ? ' · time de ' + pub : '');
       }, true);
